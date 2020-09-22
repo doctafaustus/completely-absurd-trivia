@@ -1,0 +1,48 @@
+// Variables
+$white: #fff;
+$black: #000;
+$green: #00b585;
+
+main {
+	margin: 2.5rem auto;
+	max-width: 72.5rem;
+	padding: 0 2.5rem;
+}
+
+section.game-header {
+	outline: solid 3px $black;
+	position: relative;
+	z-index: 1;
+
+	&::before {
+		content: '';
+		display: block;
+		width: 100%;
+		height: 100%;
+		bottom: -.65rem;
+		right: -.65rem;
+		background-color: $green;
+		position: absolute;
+		z-index: -1;
+	}
+
+	.game-header-items {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr;
+		background-color: $white;
+
+		.game-header-item {
+			padding: .8rem;
+			text-align: center;
+			font-weight: 700;
+
+			.game-header-item-label {
+				font-size: 1.125rem;
+			}
+
+			.game-header-item-value {
+				font-size: 1.5rem;
+			}	
+		}
+	}
+}
