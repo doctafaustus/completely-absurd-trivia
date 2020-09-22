@@ -2,6 +2,7 @@
 node_modules
 client/node_modules
 /private
+.cache/
 
 # local env files
 .env.local
