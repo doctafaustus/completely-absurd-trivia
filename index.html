@@ -2,53 +2,114 @@
 <head>
   <title>Completely Absurd Trivia</title>
   <meta name=viewport content="width=device-width,initial-scale=1">
-	<link rel="stylesheet" href="./styles/reset.css">
-	<link rel="stylesheet" href="./styles/global.scss">
-	<link rel="stylesheet" href="./styles/game.scss">
-	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="./styles/reset.css">
+  <link rel="stylesheet" href="./styles/global.scss">
+  <link rel="stylesheet" href="./styles/game.scss">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
+  <link href="https://allfont.net/allfont.css?fonts=digital-7-mono" rel="stylesheet" type="text/css" />
 </head>
 <body>
-	<main>
-		<section class="game-header">
-			<ul class="game-header-items">
-				<li class="game-header-item">
-					<span class="game-header-item-label">Score: </span>
-					<span class="game-header-item-value header-score">1,345</span>
-				</li>
-				<li class="game-header-item">
-					<span class="game-header-item-label">Rank: </span>
-					<span class="game-header-item-value header-rank">7/43</span>
-				</li>
-				<li class="game-header-item">
-					<span class="game-header-item-label">Accuracy: </span>
-					<span class="game-header-item-value header-accuracy">50%</span>
-				</li>
-			</ul>
-		</section>
+  <main>
+    <section class="game-header">
+      <ul class="game-header-items">
+        <li class="game-header-item">
+          <span class="game-header-item-label">Score: </span>
+          <span class="game-header-item-value header-score">1,345</span>
+        </li>
+        <li class="game-header-item">
+          <span class="game-header-item-label">Rank: </span>
+          <span class="game-header-item-value header-rank">7/43</span>
+        </li>
+        <li class="game-header-item">
+          <span class="game-header-item-label">Accuracy: </span>
+          <span class="game-header-item-value header-accuracy">50%</span>
+        </li>
+      </ul>
+    </section>
 
-		<section class="contestants">
-			<ul class="contestant-list">
-				<li class="contestant">
-          <img class="contestant-avatar" src="./images/avatar.jpg">
-					<div class="contestant-rank">1</div>
-					<div class="contestant-score">1,345</div>
+    <section class="contestants">
+      <ul class="contestant-list">
+        <li class="contestant">
+          <div class="contestant-top-row">
+            <span class="contestant-name">BilboBaggins</span>
+            <span class="contestant-rank">1</span>
+            <span class="lock"><img src="./images/lock-icon.png"></span>
+          </div>
+          <div class="contestant-avatar-container">
+            <img class="contestant-avatar" src="./images/avatar.jpg">
+          </div>
+          <div class="contestant-bottom-row">
+            <div class="answered-container">
+              <span class="answered-btn a">A</span>
+              <span class="answered-btn b">B</span>
+              <span class="answered-btn c">C</span>
+              <span class="answered-btn d">D</span>
+            </div>
+            <span class="contestant-score">1,345</span>
+            <span class="contestant-score-plus">+100</span>
+          </div>
         </li>
-				<li class="contestant">
-          <img class="contestant-avatar" src="./images/avatar.jpg">
-					<div class="contestant-rank">2</div>
-					<div class="contestant-score">1,299</div>
+        <li class="contestant">
+          <div class="contestant-top-row">
+            <span class="contestant-name">MrLoser</span>
+            <span class="contestant-rank">2</span>
+            <span class="lock"><img src="./images/lock-icon.png"></span>
+          </div>
+          <div class="contestant-avatar-container">
+            <img class="contestant-avatar" src="./images/avatar.jpg">
+          </div>
+          <div class="contestant-bottom-row">
+            <div class="answered-container">
+              <span class="answered-btn a">A</span>
+              <span class="answered-btn b">B</span>
+              <span class="answered-btn c">C</span>
+              <span class="answered-btn d">D</span>
+            </div>
+            <span class="contestant-score">1,300</span>
+            <span class="contestant-score-plus">+100</span>
+          </div>
         </li>
-				<li class="contestant">
-          <img class="contestant-avatar" src="./images/avatar.jpg">
-					<div class="contestant-rank">3</div>
-					<div class="contestant-score">1,075</div>
+        <li class="contestant">
+          <div class="contestant-top-row">
+            <span class="contestant-name">Venask4</span>
+            <span class="contestant-rank">3</span>
+            <span class="lock"><img src="./images/lock-icon.png"></span>
+          </div>
+          <div class="contestant-avatar-container">
+            <img class="contestant-avatar" src="./images/avatar.jpg">
+          </div>
+          <div class="contestant-bottom-row">
+            <div class="answered-container">
+              <span class="answered-btn a">A</span>
+              <span class="answered-btn b">B</span>
+              <span class="answered-btn c">C</span>
+              <span class="answered-btn d">D</span>
+            </div>
+            <span class="contestant-score">1,299</span>
+            <span class="contestant-score-plus">+50</span>
+          </div>
         </li>
-				<li class="contestant">
-          <img class="contestant-avatar" src="./images/avatar.jpg">
-					<div class="contestant-rank">4</div>
-					<div class="contestant-score">873</div>
-				</li>
-			</ul> 
+        <li class="contestant">
+          <div class="contestant-top-row">
+            <span class="contestant-name">JoeyPotato</span>
+            <span class="contestant-rank">4</span>
+            <span class="lock"><img src="./images/lock-icon.png"></span>
+          </div>
+          <div class="contestant-avatar-container">
+            <img class="contestant-avatar" src="./images/avatar.jpg">
+          </div>
+          <div class="contestant-bottom-row">
+                        <div class="answered-container">
+              <span class="answered-btn a">A</span>
+              <span class="answered-btn b">B</span>
+              <span class="answered-btn c">C</span>
+              <span class="answered-btn d">D</span>
+            </div>
+            <span class="contestant-score">950</span>
+            <span class="contestant-score-plus">+500</span>
+          </div>
+        </li>
+      </ul> 
     </section>
     
     <section class="question-container">
@@ -60,16 +121,16 @@
     <section class="answer-container">
       <ul class="answer-btn-list">
         <li class="answer-btn-item">
-          <button id="answer-btn-a">Mars</button>
+          <button id="answer-btn-a" class="answer" data-letter="a">Mars</button>
         </li>
         <li class="answer-btn-item">
-          <button id="answer-btn-b">Venus</button>
+          <button id="answer-btn-b" class="answer" data-letter="b">Venus</button>
         </li>
         <li class="answer-btn-item">
-          <button id="answer-btn-c">Earth</button>
+          <button id="answer-btn-c" class="answer" data-letter="c">Earth</button>
         </li>
         <li class="answer-btn-item">
-          <button id="answer-btn-d">Mercury</button>
+          <button id="answer-btn-d" class="answer" data-letter="d">Mercury</button>
         </li>
       </ul>
     </section>
@@ -78,6 +139,6 @@
 
 
 
-	<script src="./index.js"></script>
+  <script src="./game.js"></script>
 </body>
 </html>

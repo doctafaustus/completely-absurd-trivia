@@ -17,7 +17,7 @@ section.game-header::before {
   height: 100%;
   bottom: -0.75rem;
   right: -0.75rem;
-  background-color: #00b585;
+  background-color: #000;
   position: absolute;
   z-index: -1;
 }
@@ -39,7 +39,7 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
 }
 
 section.contestants {
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 }
 section.contestants .contestant-list {
   display: grid;
@@ -47,7 +47,7 @@ section.contestants .contestant-list {
   grid-column-gap: 1.8rem;
 }
 section.contestants .contestant-list .contestant {
-  border: solid 3px #000;
+  outline: solid 3px #000;
   border-bottom: none;
   position: relative;
   background-color: #fff;
@@ -63,31 +63,77 @@ section.contestants .contestant-list .contestant::before {
   background-color: #00b585;
   position: absolute;
   z-index: -1;
-  top: -0.75rem;
 }
-section.contestants .contestant-list .contestant:nth-child(2)::before {
+section.contestants .contestant-list .contestant:nth-child(1) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(1)::before {
+  background-color: #00b585;
+}
+section.contestants .contestant-list .contestant:nth-child(2) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(2)::before {
   background-color: #ea9a3c;
 }
-section.contestants .contestant-list .contestant:nth-child(3)::before {
+section.contestants .contestant-list .contestant:nth-child(3) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(3)::before {
   background-color: #f56dfe;
 }
-section.contestants .contestant-list .contestant:nth-child(4)::before {
+section.contestants .contestant-list .contestant:nth-child(4) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(4)::before {
   background-color: #7c94f9;
 }
-section.contestants .contestant-list .contestant .contestant-rank {
-  position: absolute;
-  z-index: 1;
-  background-color: #000;
+section.contestants .contestant-list .contestant .contestant-top-row {
   color: #fff;
-  padding: 0 0.8rem;
-  top: 0;
-  right: 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 0.5rem;
 }
-section.contestants .contestant-list .contestant .contestant-score {
+section.contestants .contestant-list .contestant .contestant-top-row .lock {
+  display: none;
+  width: 0.8rem;
+}
+section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
+  color: #000;
+  font-weight: 700;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row {
   background-color: #000;
   color: #fff;
-  padding: 0.2rem 0;
-  font-size: 1.2rem;
+  position: relative;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn {
+  display: none;
+  position: absolute;
+  left: 0.4rem;
+  top: 0.6rem;
+  border-radius: 50%;
+  height: 1.3rem;
+  width: 1.3rem;
+  line-height: 1.3rem;
+  font-size: 0.9rem;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.a {
+  background-color: #7fcb28;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.b {
+  background-color: #f34048;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.c {
+  background-color: #667fee;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.d {
+  background-color: #eaa249;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score,
+section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
+  font-family: "Digital-7 Mono", sans-serif;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score {
+  font-size: 1.5rem;
+  letter-spacing: 0.05rem;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
+  color: #00de25;
+  font-size: 1.4rem;
+  letter-spacing: 0.03rem;
+  position: absolute;
+  right: 0.4rem;
+  top: 0.3rem;
 }
 
 section.question-container {
@@ -123,12 +169,11 @@ section.question-container:after {
   height: 113%;
   overflow: hidden;
   z-index: -2;
-  filter: brightness(-1);
 }
 section.question-container .question-text {
   text-align: center;
   font-size: 3rem;
-  line-height: 3.5rem;
+  line-height: 4rem;
   font-weight: 700;
   user-select: none;
 }
@@ -154,8 +199,50 @@ section.answer-container .answer-btn-list .answer-btn-item button {
   cursor: pointer;
   font-size: 1.5rem;
   font-weight: 700;
-  padding: 0.45rem 1rem;
+  padding: 0.45rem 2rem;
   border: solid 3px #000;
+  position: relative;
+}
+section.answer-container .answer-btn-list .answer-btn-item button::before {
+  content: attr(data-letter);
+  text-transform: uppercase;
+  background-color: #7fcb28;
+  position: absolute;
+  left: 0;
+  top: 0.6rem;
+  margin-left: 1rem;
+  border-radius: 50%;
+  height: 2rem;
+  width: 2rem;
+  line-height: 2rem;
+}
+section.answer-container .answer-btn-list .answer-btn-item button#answer-btn-b::before {
+  background-color: #f34048;
+  padding-left: 1px;
+}
+section.answer-container .answer-btn-list .answer-btn-item button#answer-btn-c::before {
+  background-color: #667fee;
+}
+section.answer-container .answer-btn-list .answer-btn-item button#answer-btn-d::before {
+  background-color: #eaa249;
+  padding-left: 3px;
+}
+section.answer-container .answer-btn-list .answer-btn-item button[disabled]:not(.selected) {
+  color: #c0c0c0;
+  border-color: #c0c0c0;
+}
+section.answer-container .answer-btn-list .answer-btn-item button:hover:not([disabled]), section.answer-container .answer-btn-list .answer-btn-item button.selected {
+  background-color: #000;
+  color: #fff;
+}
+section.answer-container .answer-btn-list .answer-btn-item button.correct, section.answer-container .answer-btn-list .answer-btn-item button.incorrect {
+  color: #000;
+}
+section.answer-container .answer-btn-list .answer-btn-item button.correct {
+  background-color: #00de25;
+}
+section.answer-container .answer-btn-list .answer-btn-item button.incorrect {
+  background-color: #f00;
 }
 
 @media (max-width: 48rem) {
@@ -188,26 +275,10 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   section.contestants .contestant-list {
     grid-column-gap: 0.4rem;
   }
-  section.contestants .contestant-list .contestant:nth-child(1) {
-    border-top: solid 3px #00b585;
-  }
-  section.contestants .contestant-list .contestant:nth-child(2) {
-    border-top: solid 3px #ea9a3c;
-  }
-  section.contestants .contestant-list .contestant:nth-child(3) {
-    border-top: solid 3px #f56dfe;
-  }
-  section.contestants .contestant-list .contestant:nth-child(4) {
-    border-top: solid 3px #7c94f9;
-  }
   section.contestants .contestant-list .contestant::before {
     content: none;
   }
-  section.contestants .contestant-list .contestant .contestant-rank {
-    font-size: 0.7rem;
-    padding: 0 0.4rem;
-  }
-  section.contestants .contestant-list .contestant .contestant-score {
+  section.contestants .contestant-list .contestant .contestant-top-row .contestant-name {
     font-size: 0.7rem;
   }
 
