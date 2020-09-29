@@ -27,7 +27,7 @@ $redIncorrect: #f00;
 
 
 main {
-	margin: 2rem auto 3.5rem auto;
+	margin: 1rem auto 3.5rem auto;
 	max-width: 72.5rem;
 	padding: 0 4.5rem;
 }
@@ -332,6 +332,7 @@ section.answer-container {
 
     .contestant-list {
       grid-column-gap: .4rem;
+      grid-template-columns: 1fr 1fr;
 
       .contestant {
         &::before {
@@ -344,6 +345,18 @@ section.answer-container {
           }
         }
 
+        .contestant-avatar-container {
+          .contestant-avatar {
+            max-width: 60%;
+          }
+        }
+
+        .contestant-bottom-row {
+          .contestant-score,
+          .contestant-score-plus {
+            font-size: .8rem;
+          }
+        }
       }
     }
   }

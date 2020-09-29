@@ -1,5 +1,5 @@
 main {
-  margin: 2rem auto 3.5rem auto;
+  margin: 1rem auto 3.5rem auto;
   max-width: 72.5rem;
   padding: 0 4.5rem;
 }
@@ -274,12 +274,20 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   }
   section.contestants .contestant-list {
     grid-column-gap: 0.4rem;
+    grid-template-columns: 1fr 1fr;
   }
   section.contestants .contestant-list .contestant::before {
     content: none;
   }
   section.contestants .contestant-list .contestant .contestant-top-row .contestant-name {
     font-size: 0.7rem;
+  }
+  section.contestants .contestant-list .contestant .contestant-avatar-container .contestant-avatar {
+    max-width: 60%;
+  }
+  section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score,
+section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
+    font-size: 0.8rem;
   }
 
   section.question-container {
