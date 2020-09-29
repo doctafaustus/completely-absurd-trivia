@@ -247,7 +247,7 @@ section.answer-container .answer-btn-list .answer-btn-item button.incorrect {
 
 @media (max-width: 48rem) {
   main {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
   }
 
   section.game-header {
@@ -275,19 +275,23 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   section.contestants .contestant-list {
     grid-column-gap: 0.4rem;
     grid-template-columns: 1fr 1fr;
+    grid-column-gap: 0.6rem;
+    grid-row-gap: 0.6rem;
   }
   section.contestants .contestant-list .contestant::before {
     content: none;
   }
-  section.contestants .contestant-list .contestant .contestant-top-row .contestant-name {
-    font-size: 0.7rem;
+  section.contestants .contestant-list .contestant .contestant-top-row .contestant-name,
+section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
+    font-size: 0.65rem;
   }
   section.contestants .contestant-list .contestant .contestant-avatar-container .contestant-avatar {
-    max-width: 60%;
+    max-width: 30%;
   }
   section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score,
 section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
-    font-size: 0.8rem;
+    font-size: 0.65rem;
+    line-height: 0.7rem;
   }
 
   section.question-container {

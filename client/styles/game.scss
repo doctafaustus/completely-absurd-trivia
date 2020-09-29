@@ -299,7 +299,7 @@ section.answer-container {
 
 @media (max-width: 48rem) {
   main {
-    padding: 0 1.5rem;
+    padding: 0 1rem;
   }
 
   section.game-header {
@@ -333,6 +333,8 @@ section.answer-container {
     .contestant-list {
       grid-column-gap: .4rem;
       grid-template-columns: 1fr 1fr;
+      grid-column-gap: .6rem;
+      grid-row-gap: .6rem;
 
       .contestant {
         &::before {
@@ -340,21 +342,25 @@ section.answer-container {
         }
 
         .contestant-top-row {
-          .contestant-name {
-            font-size: .7rem;
+          .contestant-name,
+          .contestant-rank {
+            font-size: .65rem;
           }
+
+
         }
 
         .contestant-avatar-container {
           .contestant-avatar {
-            max-width: 60%;
+            max-width: 30%;
           }
         }
 
         .contestant-bottom-row {
           .contestant-score,
           .contestant-score-plus {
-            font-size: .8rem;
+            font-size: .65rem;
+            line-height: .7rem;
           }
         }
       }
