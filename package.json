@@ -1,0 +1,23 @@
+{
+  "name": "completely-absurd-trivia",
+  "version": "1.0.0",
+  "description": "To run app:\r ```js\r   parcel index.html\r ```",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/doctafaustus/completely-absurd-trivia.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/doctafaustus/completely-absurd-trivia/issues"
+  },
+  "homepage": "https://github.com/doctafaustus/completely-absurd-trivia#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
