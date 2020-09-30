@@ -299,6 +299,9 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   section.contestants .contestant-list .contestant::before {
     content: none;
   }
+  section.contestants .contestant-list .contestant .contestant-top-row {
+    padding: 0 0.3rem;
+  }
   section.contestants .contestant-list .contestant .contestant-top-row .contestant-name,
 section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
     font-size: 0.65rem;
