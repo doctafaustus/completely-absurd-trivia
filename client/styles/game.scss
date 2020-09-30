@@ -342,7 +342,7 @@ section.answer-container {
     display: grid;
     grid-template-areas:  "contestants question-container"
                           "contestants answer-container";
-    grid-column-gap: 1rem;
+    grid-column-gap: .7rem;
   }
 
   section.contestants {
@@ -412,6 +412,12 @@ section.answer-container {
         button {
           font-size: 1rem;
           line-height: 1.3rem;
+          padding: 5%;
+
+
+          &::before {
+            content: none;
+          }
         }
       }
     }

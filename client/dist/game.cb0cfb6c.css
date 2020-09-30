@@ -282,7 +282,7 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   section.game-container {
     display: grid;
     grid-template-areas: "contestants question-container" "contestants answer-container";
-    grid-column-gap: 1rem;
+    grid-column-gap: 0.7rem;
   }
 
   section.contestants {
@@ -334,6 +334,10 @@ section.contestants .contestant-list .contestant .contestant-bottom-row .contest
   section.answer-container .answer-btn-list .answer-btn-item button {
     font-size: 1rem;
     line-height: 1.3rem;
+    padding: 5%;
+  }
+  section.answer-container .answer-btn-list .answer-btn-item button::before {
+    content: none;
   }
 }
 
