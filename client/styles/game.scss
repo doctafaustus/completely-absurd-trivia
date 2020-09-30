@@ -219,6 +219,7 @@ section.question-container {
     line-height: 4rem;
     font-weight: 700;
     user-select: none;
+    word-break: break-word;
   }
 }
 
@@ -388,24 +389,25 @@ section.answer-container {
 
   section.question-container {
     height: 90%;
-    padding: 1rem;
+    padding: .7rem;
     margin-bottom: 1.5rem;
+    align-self: center;
 
     &::after {
       content: none;
     }
 
     .question-text {
-      font-size: 1.1rem;
-      line-height: 1.45rem;
+      font-size: 1rem;
+      line-height: 1.4rem;
     }
   }
 
   section.answer-container {
     .answer-btn-list {
       width: 100%;
-      grid-column-gap: 1rem;
-      grid-row-gap: 1rem;
+      grid-column-gap: .6rem;
+      grid-row-gap: .7rem;
 
       .answer-btn-item {
         width: 100%;
