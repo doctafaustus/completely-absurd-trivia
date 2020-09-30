@@ -357,6 +357,8 @@ section.answer-container {
       grid-row-gap: .6rem;
 
       .contestant {
+        overflow: hidden;
+
         &::before {
           content: none;
         }
@@ -364,12 +366,17 @@ section.answer-container {
         .contestant-top-row {
           padding: 0 0.3rem;
 
-          .contestant-name,
-          .contestant-rank {
+          .contestant-name {
             font-size: .65rem;
+            text-overflow: ellipsis;
+            overflow: hidden;
+            display: block;
+            white-space: nowrap;
           }
 
-
+          .contestant-rank {
+            display: none;
+          }
         }
 
         .contestant-avatar-container {
