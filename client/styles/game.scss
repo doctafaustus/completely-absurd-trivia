@@ -366,12 +366,9 @@ section.answer-container {
         .contestant-top-row {
           padding: 0 0.3rem;
 
-          .contestant-name {
-            font-size: .65rem;
-          }
-
+          .contestant-name,
           .contestant-rank {
-            display: none;
+            font-size: .65rem;
           }
         }
 
