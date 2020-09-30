@@ -85,35 +85,28 @@ section.contestants {
       position: relative;
       background-color: $white;
       text-align: center;
-
-      &::before {
-        @include dropShadow($green);
-      }
+      overflow: hidden;
 
       &:nth-child(1) {
-        .contestant-top-row,
-        &::before {
+        .contestant-top-row {
           background-color: $green;
         }
       }
 
       &:nth-child(2) {
-        .contestant-top-row,
-        &::before {
+        .contestant-top-row {
           background-color: $orange;
         }
       }
 
       &:nth-child(3) {
-        .contestant-top-row,
-        &::before {
+        .contestant-top-row {
           background-color: $pink;
         }
       }
 
       &:nth-child(4) {
-        .contestant-top-row,
-        &::before {
+        .contestant-top-row {
           background-color: $blue;
         }
       }
@@ -128,6 +121,13 @@ section.contestants {
         .lock {
           display: none;
           width: .8rem;
+        }
+
+        .contestant-name {
+          text-overflow: ellipsis;
+          overflow: hidden;
+          display: block;
+          white-space: nowrap;
         }
 
         .contestant-rank {
@@ -368,10 +368,6 @@ section.answer-container {
 
           .contestant-name {
             font-size: .65rem;
-            text-overflow: ellipsis;
-            overflow: hidden;
-            display: block;
-            white-space: nowrap;
           }
 
           .contestant-rank {

@@ -58,28 +58,18 @@ section.contestants .contestant-list .contestant {
   position: relative;
   background-color: #fff;
   text-align: center;
+  overflow: hidden;
 }
-section.contestants .contestant-list .contestant::before {
-  content: "";
-  display: block;
-  width: 100%;
-  height: 100%;
-  bottom: -0.75rem;
-  right: -0.75rem;
-  background-color: #00b585;
-  position: absolute;
-  z-index: -1;
-}
-section.contestants .contestant-list .contestant:nth-child(1) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(1)::before {
+section.contestants .contestant-list .contestant:nth-child(1) .contestant-top-row {
   background-color: #00b585;
 }
-section.contestants .contestant-list .contestant:nth-child(2) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(2)::before {
+section.contestants .contestant-list .contestant:nth-child(2) .contestant-top-row {
   background-color: #ea9a3c;
 }
-section.contestants .contestant-list .contestant:nth-child(3) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(3)::before {
+section.contestants .contestant-list .contestant:nth-child(3) .contestant-top-row {
   background-color: #f56dfe;
 }
-section.contestants .contestant-list .contestant:nth-child(4) .contestant-top-row, section.contestants .contestant-list .contestant:nth-child(4)::before {
+section.contestants .contestant-list .contestant:nth-child(4) .contestant-top-row {
   background-color: #7c94f9;
 }
 section.contestants .contestant-list .contestant .contestant-top-row {
@@ -92,6 +82,12 @@ section.contestants .contestant-list .contestant .contestant-top-row {
 section.contestants .contestant-list .contestant .contestant-top-row .lock {
   display: none;
   width: 0.8rem;
+}
+section.contestants .contestant-list .contestant .contestant-top-row .contestant-name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  display: block;
+  white-space: nowrap;
 }
 section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
   color: #000;
@@ -307,10 +303,6 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   }
   section.contestants .contestant-list .contestant .contestant-top-row .contestant-name {
     font-size: 0.65rem;
-    text-overflow: ellipsis;
-    overflow: hidden;
-    display: block;
-    white-space: nowrap;
   }
   section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
     display: none;
