@@ -340,6 +340,7 @@ section.answer-container {
 
   section.game-container {
     display: grid;
+    grid-template-columns: 25% auto;
     grid-template-areas:  "contestants question-container"
                           "contestants answer-container";
     grid-column-gap: .7rem;
@@ -395,8 +396,8 @@ section.answer-container {
     }
 
     .question-text {
-      font-size: 1.5rem;
-      line-height: 2rem;
+      font-size: 1.1rem;
+      line-height: 1.45rem;
     }
   }
 
@@ -410,10 +411,9 @@ section.answer-container {
         width: 100%;
 
         button {
-          font-size: 1rem;
-          line-height: 1.3rem;
+          font-size: .75rem;
+          line-height: .95rem;
           padding: 5%;
-
 
           &::before {
             content: none;
