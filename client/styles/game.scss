@@ -321,7 +321,7 @@ section.answer-container {
 
 @media (max-width: 48rem) {
   main {
-    padding: 0 1rem;
+    padding: 0 1rem 0 .5rem
   }
 
   section.game-header {
@@ -391,8 +391,7 @@ section.answer-container {
         .contestant-bottom-row {
           height: 1.25rem;
 
-          .contestant-score,
-          .contestant-score-plus {
+          .contestant-score {
             font-size: .8rem;
             line-height: 1.1rem;
           }
@@ -409,9 +408,14 @@ section.answer-container {
           }
 
           .contestant-score-plus {
+            opacity: 1;
+            font-size: .7rem;
+            padding: .1rem .2rem;
+            line-height: .7rem;
+            border-radius: 0;
 
             &.show-plus {
-              top: -1.125rem;
+              top: -.75rem;
             }
           }
         }
