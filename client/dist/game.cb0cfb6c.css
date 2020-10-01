@@ -130,7 +130,7 @@ section.contestants .contestant-list .contestant .contestant-bottom-row .contest
   letter-spacing: 0.05rem;
 }
 section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
-  color: #00de25;
+  color: #24ff48;
   font-size: 1.4rem;
   letter-spacing: 0.03rem;
   position: absolute;
@@ -254,7 +254,7 @@ section.answer-container .answer-btn-list .answer-btn-item button.correct, secti
   color: #000;
 }
 section.answer-container .answer-btn-list .answer-btn-item button.correct {
-  background-color: #00de25;
+  background-color: #24ff48;
 }
 section.answer-container .answer-btn-list .answer-btn-item button.incorrect {
   background-color: #f00;

@@ -10,7 +10,7 @@ $redAnswer: #f34048;
 $blueAnswer: #667fee;
 $yellowAnswer: #eaa249;
 $grayDisabled: #c0c0c0;
-$greenCorrect: #00de25;
+$greenCorrect: #24ff48;
 $redIncorrect: #f00;
 
 @mixin dropShadow($color) {
@@ -176,7 +176,7 @@ section.contestants {
           font-size: 1.4rem;
           letter-spacing: .03rem;
           position: absolute;
-          background-color: #000;
+          background-color: $black;
           right: 0;
           top: 0;
           opacity: 0;
