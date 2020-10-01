@@ -139,8 +139,7 @@ section.contestants .contestant-list .contestant .contestant-bottom-row .contest
   top: 0;
   opacity: 0;
   padding: 0.125rem 0.3125rem 0 0.3125rem;
-  border-radius: 50% 0 0 0;
-  transition: all 0.075s ease-in;
+  transition: all 0.1s ease-in;
 }
 section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
   top: -1.875rem;
@@ -333,14 +332,12 @@ section.contestants .contestant-list .contestant .contestant-top-row .contestant
     left: 0.1rem;
   }
   section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
-    opacity: 1;
     font-size: 0.7rem;
     padding: 0.1rem 0.2rem;
     line-height: 0.7rem;
-    border-radius: 0;
   }
   section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
-    top: -0.75rem;
+    top: -0.87rem;
   }
 
   section.question-container {
