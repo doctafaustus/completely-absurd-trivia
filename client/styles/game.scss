@@ -180,12 +180,12 @@ section.contestants {
           right: 0;
           top: 0;
           opacity: 0;
-          padding: 2px 5px 0 5px;
+          padding: .125rem .3125rem 0 .3125rem;
           border-radius: 50% 0 0 0;
           transition: all .075s ease-in;
 
           &.show-plus {
-            top: -30px;
+            top: -1.875rem;
             opacity: 1;
           }
         }
@@ -405,6 +405,13 @@ section.answer-container {
               line-height: .72rem;
               top: .3rem;
               left: .1rem;
+            }
+          }
+
+          .contestant-score-plus {
+
+            &.show-plus {
+              top: -1.125rem;
             }
           }
         }
