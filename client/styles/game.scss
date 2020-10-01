@@ -350,10 +350,10 @@ section.answer-container {
 
   section.game-container {
     display: grid;
-    grid-template-columns: 25% auto;
+    grid-template-columns: 27% auto;
     grid-template-areas:  "contestants question-container"
                           "contestants answer-container";
-    grid-column-gap: .7rem;
+    grid-column-gap: .52rem;
   }
 
   section.contestants {
