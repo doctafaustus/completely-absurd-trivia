@@ -134,8 +134,17 @@ section.contestants .contestant-list .contestant .contestant-bottom-row .contest
   font-size: 1.4rem;
   letter-spacing: 0.03rem;
   position: absolute;
-  right: 0.4rem;
-  top: 0.3rem;
+  background-color: #000;
+  right: 0;
+  top: 0;
+  opacity: 0;
+  padding: 2px 5px 0 5px;
+  border-radius: 50% 0 0 0;
+  transition: all 0.075s ease-in;
+}
+section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
+  top: -30px;
+  opacity: 1;
 }
 
 section.question-container {
