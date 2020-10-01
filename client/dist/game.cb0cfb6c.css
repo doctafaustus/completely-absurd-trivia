@@ -308,10 +308,21 @@ section.contestants .contestant-list .contestant .contestant-top-row .contestant
   section.contestants .contestant-list .contestant .contestant-avatar-container .contestant-avatar {
     max-width: 75%;
   }
+  section.contestants .contestant-list .contestant .contestant-bottom-row {
+    height: 1.25rem;
+  }
   section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score,
 section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
-    font-size: 0.65rem;
-    line-height: 0.7rem;
+    font-size: 0.8rem;
+    line-height: 1.1rem;
+  }
+  section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn {
+    height: 0.7rem;
+    width: 0.7rem;
+    font-size: 0.55rem;
+    line-height: 0.72rem;
+    top: 0.3rem;
+    left: 0.1rem;
   }
 
   section.question-container {

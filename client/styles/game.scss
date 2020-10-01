@@ -379,10 +379,23 @@ section.answer-container {
         }
 
         .contestant-bottom-row {
+          height: 1.25rem;
+
           .contestant-score,
           .contestant-score-plus {
-            font-size: .65rem;
-            line-height: .7rem;
+            font-size: .8rem;
+            line-height: 1.1rem;
+          }
+
+          .answered-container {
+            .answered-btn {
+              height: .7rem;
+              width: .7rem;
+              font-size: .55rem;
+              line-height: .72rem;
+              top: .3rem;
+              left: .1rem;
+            }
           }
         }
       }
