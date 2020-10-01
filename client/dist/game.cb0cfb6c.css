@@ -331,6 +331,9 @@ section.contestants .contestant-list .contestant .contestant-top-row .contestant
     top: 0.3rem;
     left: 0.1rem;
   }
+  section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.b, section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.d {
+    padding-top: 0.02rem;
+  }
   section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
     font-size: 0.7rem;
     padding: 0.1rem 0.2rem;

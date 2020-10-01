@@ -403,6 +403,11 @@ section.answer-container {
               line-height: .72rem;
               top: .3rem;
               left: .1rem;
+
+              &.b,
+              &.d {
+                padding-top: .02rem;
+              }
             }
           }
 
