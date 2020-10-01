@@ -53,7 +53,7 @@ section.contestants .contestant-list {
   grid-column-gap: 1.8rem;
 }
 section.contestants .contestant-list .contestant {
-  outline: solid 3px #000;
+  border: solid 3px #000;
   border-bottom: none;
   position: relative;
   background-color: #fff;

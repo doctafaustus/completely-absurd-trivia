@@ -80,7 +80,7 @@ section.contestants {
     grid-column-gap: 1.8rem;
 
     .contestant {
-      outline: solid 3px $black;
+      border: solid 3px $black;
       border-bottom: none;
       position: relative;
       background-color: $white;
