@@ -138,6 +138,34 @@ function init() {
 }
 
 init();
+animateValue({
+  selector: '.contestant-score',
+  endValue: 2000
+});
+
+function animateValue(_ref) {
+  var selector = _ref.selector,
+      endValue = _ref.endValue;
+  var el = document.querySelector(selector);
+  var range = endValue - Number(el.innerHTML);
+  var duration = 500;
+  var stepTime = 50; // get current time and calculate desired end time
+
+  var startTime = new Date().getTime();
+  var endTime = startTime + duration;
+  var timer;
+
+  function run() {
+    var now = new Date().getTime();
+    var remaining = Math.max((endTime - now) / duration, 0);
+    var value = Math.round(endValue - remaining * range);
+    el.innerHTML = value;
+    if (value == endValue) clearInterval(timer);
+  }
+
+  timer = setInterval(run, stepTime);
+  run();
+}
 },{}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -166,7 +194,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64729" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60715" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
