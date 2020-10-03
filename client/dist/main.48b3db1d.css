@@ -1,0 +1,14 @@
+body {
+  border: solid 1px red;
+}
+
+@keyframes flip {
+  0% {
+    transform: rotateX(0);
+  }
+  100% {
+    transform: rotateX(-180deg);
+  }
+}
+
+/*# sourceMappingURL=/main.48b3db1d.css.map */

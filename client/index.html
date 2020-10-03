@@ -4,9 +4,11 @@
   <meta name=viewport content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="./styles/reset.css">
   <link rel="stylesheet" href="./styles/global.scss">
+  <link rel="stylesheet" href="./styles/main.scss">
   <link rel="stylesheet" href="./styles/game.scss">
+  <link rel="stylesheet" href="./styles/board.scss">
+
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
-  <link href="https://allfont.net/allfont.css?fonts=digital-7-mono" rel="stylesheet" type="text/css" />
 </head>
 <body>
   <main>
@@ -136,8 +138,16 @@
         </ul>
       </section>
     </section>
+
+    <section class="board">
+      <h1 class="section-title">
+        <div class="section-title-inner">Leaderboard</div>
+      </h1>
+      <ul class="contestant-list"></ul>
+    </section>
   </main>
 
-  <script src="./game.js"></script>
+  <script src="./scripts/game.js"></script>
+  <script src="./scripts/board.js"></script>
 </body>
 </html>

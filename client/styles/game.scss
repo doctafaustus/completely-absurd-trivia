@@ -1,30 +1,4 @@
-// Variables
-$white: #fff;
-$black: #000;
-$green: #00b585;
-$orange: #ea9a3c;
-$pink: #f56dfe;
-$blue: #7c94f9;
-$greenAnswer: #7fcb28;
-$redAnswer: #f34048;
-$blueAnswer: #667fee;
-$yellowAnswer: #eaa249;
-$grayDisabled: #c0c0c0;
-$greenCorrect: #24ff48;
-$redIncorrect: #f00;
-
-@mixin dropShadow($color) {
-  content: '';
-  display: block;
-  width: 100%;
-  height: 100%;
-  bottom: -.75rem;
-  right: -.75rem;
-  background-color: $color;
-  position: absolute;
-  z-index: -1;
-}
-
+@import 'variables';
 
 main {
 	margin: .75rem auto 3.5rem auto;
@@ -73,120 +47,115 @@ section.game-container {
 section.contestants {
   grid-area: contestants;
   margin-bottom: 1.5rem;
+}
 
-  .contestant-list {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    grid-column-gap: 1.8rem;
+.contestant-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-column-gap: 1.8rem;
 
-    .contestant {
-      border: solid 3px $black;
-      border-bottom: none;
-      position: relative;
-      background-color: $white;
-      text-align: center;
-      overflow: hidden;
+  .contestant {
+    border: solid 3px $black;
+    border-bottom: none;
+    position: relative;
+    background-color: $white;
+    text-align: center;
+    overflow: hidden;
 
-      &:nth-child(1) {
-        .contestant-top-row {
-          background-color: $green;
-        }
-      }
-
-      &:nth-child(2) {
-        .contestant-top-row {
-          background-color: $orange;
-        }
-      }
-
-      &:nth-child(3) {
-        .contestant-top-row {
-          background-color: $pink;
-        }
-      }
-
-      &:nth-child(4) {
-        .contestant-top-row {
-          background-color: $blue;
-        }
-      }
-
+    &:nth-child(1) {
       .contestant-top-row {
-        color: $white;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 0 .5rem;
+        background-color: $green;
+      }
+    }
 
-        .lock {
+    &:nth-child(2) {
+      .contestant-top-row {
+        background-color: $orange;
+      }
+    }
+
+    &:nth-child(3) {
+      .contestant-top-row {
+        background-color: $pink;
+      }
+    }
+
+    &:nth-child(4) {
+      .contestant-top-row {
+        background-color: $blue;
+      }
+    }
+
+    .contestant-top-row {
+      color: $white;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 .5rem;
+
+      .lock {
+        display: none;
+        width: .8rem;
+      }
+
+      .contestant-name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        display: block;
+        white-space: nowrap;
+      }
+
+      .contestant-rank {
+        color: $black;
+        font-weight: 700;
+      }
+    }
+
+    .contestant-bottom-row {
+      background-color: $black;
+      color: $white;
+      position: relative;
+
+      .answered-container {
+
+        .answered-btn {
           display: none;
-          width: .8rem;
-        }
+          position: absolute;
+          left: 0.4rem;
+          top: 0.6rem;
+          border-radius: 50%;
+          height: 1.3rem;
+          width: 1.3rem;
+          line-height: 1.3rem;
+          font-size: .9rem;
 
-        .contestant-name {
-          text-overflow: ellipsis;
-          overflow: hidden;
-          display: block;
-          white-space: nowrap;
-        }
-
-        .contestant-rank {
-          color: $black;
-          font-weight: 700;
+          &.a { background-color: $greenAnswer; }
+          &.b { background-color: $redAnswer; }
+          &.c { background-color: $blueAnswer; }
+          &.d { background-color: $yellowAnswer;}
         }
       }
 
-      .contestant-bottom-row {
+      .contestant-score {
+        font-size: 1.3rem;
+        letter-spacing: .05rem;
+      }
+
+      .contestant-score-plus {
+        color: $greenCorrect;
+        font-size: 1.4rem;
+        letter-spacing: .03rem;
+        position: absolute;
         background-color: $black;
-        color: $white;
-        position: relative;
+        right: 0;
+        top: 0;
+        opacity: 0;
+        padding: .125rem .3125rem 0 .3125rem;
+        transition: all .1s ease-in;
 
-        .answered-container {
-
-          .answered-btn {
-            display: none;
-            position: absolute;
-            left: 0.4rem;
-            top: 0.6rem;
-            border-radius: 50%;
-            height: 1.3rem;
-            width: 1.3rem;
-            line-height: 1.3rem;
-            font-size: .9rem;
-
-            &.a { background-color: $greenAnswer; }
-            &.b { background-color: $redAnswer; }
-            &.c { background-color: $blueAnswer; }
-            &.d { background-color: $yellowAnswer;}
-          }
-        }
-
-        .contestant-score,
-        .contestant-score-plus {
-          font-family: 'Digital-7 Mono', sans-serif;
-        }
-
-        .contestant-score {
-          font-size: 1.5rem;
-          letter-spacing: .05rem;
-        }
-
-        .contestant-score-plus {
-          color: $greenCorrect;
-          font-size: 1.4rem;
-          letter-spacing: .03rem;
-          position: absolute;
-          background-color: $black;
-          right: 0;
-          top: 0;
-          opacity: 0;
-          padding: .125rem .3125rem 0 .3125rem;
-          transition: all .1s ease-in;
-
-          &.show-plus {
-            top: -1.875rem;
-            opacity: 1;
-          }
+        &.show-plus {
+          top: -1.875rem;
+          opacity: 1;
         }
       }
     }
@@ -358,67 +327,67 @@ section.answer-container {
 
   section.contestants {
     margin-bottom: .8rem;
+  }
 
-    .contestant-list {
-      grid-column-gap: .4rem;
-      grid-template-columns: 1fr;
-      grid-column-gap: .6rem;
-      grid-row-gap: .6rem;
+  .contestant-list {
+    grid-column-gap: .4rem;
+    grid-template-columns: 1fr;
+    grid-column-gap: .6rem;
+    grid-row-gap: .6rem;
 
-      .contestant {
-        overflow: hidden;
+    .contestant {
+      overflow: hidden;
 
-        &::before {
-          content: none;
+      &::before {
+        content: none;
+      }
+
+      .contestant-top-row {
+        padding: 0 0.3rem;
+
+        .contestant-name,
+        .contestant-rank {
+          font-size: .65rem;
+        }
+      }
+
+      .contestant-avatar-container {
+        .contestant-avatar {
+          max-width: 75%;
+        }
+      }
+
+      .contestant-bottom-row {
+        height: 1.25rem;
+
+        .contestant-score {
+          font-size: .8rem;
+          line-height: 1.43rem;
         }
 
-        .contestant-top-row {
-          padding: 0 0.3rem;
+        .answered-container {
+          .answered-btn {
+            height: .7rem;
+            width: .7rem;
+            font-size: .55rem;
+            line-height: .72rem;
+            top: .3rem;
+            left: .1rem;
 
-          .contestant-name,
-          .contestant-rank {
-            font-size: .65rem;
-          }
-        }
-
-        .contestant-avatar-container {
-          .contestant-avatar {
-            max-width: 75%;
-          }
-        }
-
-        .contestant-bottom-row {
-          height: 1.25rem;
-
-          .contestant-score {
-            font-size: .8rem;
-            line-height: 1.1rem;
-          }
-
-          .answered-container {
-            .answered-btn {
-              height: .7rem;
-              width: .7rem;
-              font-size: .55rem;
-              line-height: .72rem;
-              top: .3rem;
-              left: .1rem;
-
-              &.b,
-              &.d {
-                padding-top: .02rem;
-              }
+            &.b,
+            &.d {
+              padding-top: .02rem;
             }
           }
+        }
 
-          .contestant-score-plus {
-            font-size: .7rem;
-            padding: .1rem .2rem;
-            line-height: .7rem;
+        .contestant-score-plus {
+          font-size: .7rem;
+          padding: .1rem .2rem;
+          line-height: .7rem;
 
-            &.show-plus {
-              top: -.87rem;
-            }
+          &.show-plus {
+            top: -.87rem;
           }
         }
       }

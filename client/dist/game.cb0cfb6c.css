@@ -47,12 +47,13 @@ section.contestants {
   grid-area: contestants;
   margin-bottom: 1.5rem;
 }
-section.contestants .contestant-list {
+
+.contestant-list {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
   grid-column-gap: 1.8rem;
 }
-section.contestants .contestant-list .contestant {
+.contestant-list .contestant {
   border: solid 3px #000;
   border-bottom: none;
   position: relative;
@@ -60,45 +61,45 @@ section.contestants .contestant-list .contestant {
   text-align: center;
   overflow: hidden;
 }
-section.contestants .contestant-list .contestant:nth-child(1) .contestant-top-row {
+.contestant-list .contestant:nth-child(1) .contestant-top-row {
   background-color: #00b585;
 }
-section.contestants .contestant-list .contestant:nth-child(2) .contestant-top-row {
+.contestant-list .contestant:nth-child(2) .contestant-top-row {
   background-color: #ea9a3c;
 }
-section.contestants .contestant-list .contestant:nth-child(3) .contestant-top-row {
+.contestant-list .contestant:nth-child(3) .contestant-top-row {
   background-color: #f56dfe;
 }
-section.contestants .contestant-list .contestant:nth-child(4) .contestant-top-row {
+.contestant-list .contestant:nth-child(4) .contestant-top-row {
   background-color: #7c94f9;
 }
-section.contestants .contestant-list .contestant .contestant-top-row {
+.contestant-list .contestant .contestant-top-row {
   color: #fff;
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 0 0.5rem;
 }
-section.contestants .contestant-list .contestant .contestant-top-row .lock {
+.contestant-list .contestant .contestant-top-row .lock {
   display: none;
   width: 0.8rem;
 }
-section.contestants .contestant-list .contestant .contestant-top-row .contestant-name {
+.contestant-list .contestant .contestant-top-row .contestant-name {
   text-overflow: ellipsis;
   overflow: hidden;
   display: block;
   white-space: nowrap;
 }
-section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
+.contestant-list .contestant .contestant-top-row .contestant-rank {
   color: #000;
   font-weight: 700;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row {
+.contestant-list .contestant .contestant-bottom-row {
   background-color: #000;
   color: #fff;
   position: relative;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn {
+.contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn {
   display: none;
   position: absolute;
   left: 0.4rem;
@@ -109,27 +110,23 @@ section.contestants .contestant-list .contestant .contestant-bottom-row .answere
   line-height: 1.3rem;
   font-size: 0.9rem;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.a {
+.contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.a {
   background-color: #7fcb28;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.b {
+.contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.b {
   background-color: #f34048;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.c {
+.contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.c {
   background-color: #667fee;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.d {
+.contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.d {
   background-color: #eaa249;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score,
-section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
-  font-family: "Digital-7 Mono", sans-serif;
-}
-section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score {
-  font-size: 1.5rem;
+.contestant-list .contestant .contestant-bottom-row .contestant-score {
+  font-size: 1.3rem;
   letter-spacing: 0.05rem;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
+.contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
   color: #24ff48;
   font-size: 1.4rem;
   letter-spacing: 0.03rem;
@@ -141,7 +138,7 @@ section.contestants .contestant-list .contestant .contestant-bottom-row .contest
   padding: 0.125rem 0.3125rem 0 0.3125rem;
   transition: all 0.1s ease-in;
 }
-section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
+.contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
   top: -1.875rem;
   opacity: 1;
 }
@@ -294,36 +291,37 @@ section.game-header .game-header-items .game-header-item .game-header-item-value
   section.contestants {
     margin-bottom: 0.8rem;
   }
-  section.contestants .contestant-list {
+
+  .contestant-list {
     grid-column-gap: 0.4rem;
     grid-template-columns: 1fr;
     grid-column-gap: 0.6rem;
     grid-row-gap: 0.6rem;
   }
-  section.contestants .contestant-list .contestant {
+  .contestant-list .contestant {
     overflow: hidden;
   }
-  section.contestants .contestant-list .contestant::before {
+  .contestant-list .contestant::before {
     content: none;
   }
-  section.contestants .contestant-list .contestant .contestant-top-row {
+  .contestant-list .contestant .contestant-top-row {
     padding: 0 0.3rem;
   }
-  section.contestants .contestant-list .contestant .contestant-top-row .contestant-name,
-section.contestants .contestant-list .contestant .contestant-top-row .contestant-rank {
+  .contestant-list .contestant .contestant-top-row .contestant-name,
+.contestant-list .contestant .contestant-top-row .contestant-rank {
     font-size: 0.65rem;
   }
-  section.contestants .contestant-list .contestant .contestant-avatar-container .contestant-avatar {
+  .contestant-list .contestant .contestant-avatar-container .contestant-avatar {
     max-width: 75%;
   }
-  section.contestants .contestant-list .contestant .contestant-bottom-row {
+  .contestant-list .contestant .contestant-bottom-row {
     height: 1.25rem;
   }
-  section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score {
+  .contestant-list .contestant .contestant-bottom-row .contestant-score {
     font-size: 0.8rem;
-    line-height: 1.1rem;
+    line-height: 1.43rem;
   }
-  section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn {
+  .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn {
     height: 0.7rem;
     width: 0.7rem;
     font-size: 0.55rem;
@@ -331,15 +329,15 @@ section.contestants .contestant-list .contestant .contestant-top-row .contestant
     top: 0.3rem;
     left: 0.1rem;
   }
-  section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.b, section.contestants .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.d {
+  .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.b, .contestant-list .contestant .contestant-bottom-row .answered-container .answered-btn.d {
     padding-top: 0.02rem;
   }
-  section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
+  .contestant-list .contestant .contestant-bottom-row .contestant-score-plus {
     font-size: 0.7rem;
     padding: 0.1rem 0.2rem;
     line-height: 0.7rem;
   }
-  section.contestants .contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
+  .contestant-list .contestant .contestant-bottom-row .contestant-score-plus.show-plus {
     top: -0.87rem;
   }
 

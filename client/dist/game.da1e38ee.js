@@ -117,79 +117,56 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
-var bundleURL = null;
+})({"scripts/game.js":[function(require,module,exports) {
+var answerBtns = document.querySelectorAll('.answer');
 
-function getBundleURLCached() {
-  if (!bundleURL) {
-    bundleURL = getBundleURL();
+function bindBtnListeners() {
+  answerBtns.forEach(function (btn) {
+    return btn.addEventListener('click', handleGuess);
+  });
+}
+
+function handleGuess(e) {
+  e.target.classList.add('selected');
+  answerBtns.forEach(function (btn) {
+    return btn.disabled = true;
+  });
+}
+
+function init() {
+  bindBtnListeners();
+}
+
+init();
+animateValue({
+  selector: '.contestant-score',
+  endValue: 2000
+});
+
+function animateValue(_ref) {
+  var selector = _ref.selector,
+      endValue = _ref.endValue;
+  var el = document.querySelector(selector);
+  var range = endValue - Number(el.innerHTML);
+  var duration = 500;
+  var stepTime = 50; // get current time and calculate desired end time
+
+  var startTime = new Date().getTime();
+  var endTime = startTime + duration;
+  var timer;
+
+  function run() {
+    var now = new Date().getTime();
+    var remaining = Math.max((endTime - now) / duration, 0);
+    var value = Math.round(endValue - remaining * range);
+    el.innerHTML = value;
+    if (value == endValue) clearInterval(timer);
   }
 
-  return bundleURL;
+  timer = setInterval(run, stepTime);
+  run();
 }
-
-function getBundleURL() {
-  // Attempt to find the URL of the current script and use that as the base URL
-  try {
-    throw new Error();
-  } catch (err) {
-    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
-
-    if (matches) {
-      return getBaseURL(matches[0]);
-    }
-  }
-
-  return '/';
-}
-
-function getBaseURL(url) {
-  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
-}
-
-exports.getBundleURL = getBundleURLCached;
-exports.getBaseURL = getBaseURL;
-},{}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
-var bundle = require('./bundle-url');
-
-function updateLink(link) {
-  var newLink = link.cloneNode();
-
-  newLink.onload = function () {
-    link.remove();
-  };
-
-  newLink.href = link.href.split('?')[0] + '?' + Date.now();
-  link.parentNode.insertBefore(newLink, link.nextSibling);
-}
-
-var cssTimeout = null;
-
-function reloadCSS() {
-  if (cssTimeout) {
-    return;
-  }
-
-  cssTimeout = setTimeout(function () {
-    var links = document.querySelectorAll('link[rel="stylesheet"]');
-
-    for (var i = 0; i < links.length; i++) {
-      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
-        updateLink(links[i]);
-      }
-    }
-
-    cssTimeout = null;
-  }, 50);
-}
-
-module.exports = reloadCSS;
-},{"./bundle-url":"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"styles/game.scss":[function(require,module,exports) {
-var reloadCSS = require('_css_loader');
-
-module.hot.dispose(reloadCSS);
-module.hot.accept(reloadCSS);
-},{"./..\\images\\dot-bg.jpg":[["dot-bg.efd50a66.jpg","images/dot-bg.jpg"],"images/dot-bg.jpg"],"_css_loader":"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/css-loader.js"}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -393,5 +370,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js"], null)
-//# sourceMappingURL=/game.cb0cfb6c.js.map
+},{}]},{},["../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/game.js"], null)
+//# sourceMappingURL=/game.da1e38ee.js.map

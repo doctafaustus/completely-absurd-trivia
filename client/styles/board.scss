@@ -1,0 +1,59 @@
+@import 'variables';
+
+section.game-header,
+section.game-container {
+  display: none;
+}
+
+
+section.board {
+  .section-title {
+    outline: solid 3px #000;
+    position: relative;
+    z-index: 1;
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 1.8rem;
+
+    &:before {
+      @include dropShadow($black);
+    }
+
+    .section-title-inner {
+      background-color: $white;
+      padding: .6rem;
+    }
+  }
+
+  .contestant-list {
+    grid-gap: .2rem;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+
+    .contestant {
+      .contestant-top-row {
+        background-color: $white;
+        padding: 0;
+        display: block;
+
+        .contestant-name {
+          display: none;
+        }
+
+        .contestant-rank {
+          position: absolute;
+          top: .12rem;
+          right: .15rem;
+          line-height: .8rem;
+          font-size: .75rem;
+        }
+      }
+
+      .contestant-bottom-row {
+        .contestant-score {
+          font-size: .9rem;
+        }
+      }
+    }
+  }
+}
+

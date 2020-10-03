@@ -1,0 +1,1 @@
+{"version":3,"sources":["styles\\main.scss"],"names":[],"mappings":"AAAA;EACE;;;AAKF;EACE;IAAK;;EACL;IAAO","file":"main.48b3db1d.css","sourceRoot":"..","sourcesContent":["body {\r\n  border: solid 1px red;\r\n}\r\n\r\n\r\n\r\n@keyframes flip {\r\n  0% { transform: rotateX(0); }\r\n  100% { transform: rotateX(-180deg); }\r\n}\r\n"]}

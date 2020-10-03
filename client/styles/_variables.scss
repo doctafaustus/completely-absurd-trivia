@@ -1,0 +1,27 @@
+// Variables
+$white: #fff;
+$black: #000;
+$green: #00b585;
+$orange: #ea9a3c;
+$pink: #f56dfe;
+$blue: #7c94f9;
+$greenAnswer: #7fcb28;
+$redAnswer: #f34048;
+$blueAnswer: #667fee;
+$yellowAnswer: #eaa249;
+$grayDisabled: #c0c0c0;
+$greenCorrect: #24ff48;
+$redIncorrect: #f00;
+
+@mixin dropShadow($color) {
+  content: '';
+  display: block;
+  width: 100%;
+  height: 100%;
+  bottom: -.75rem;
+  right: -.75rem;
+  background-color: $color;
+  position: absolute;
+  z-index: -1;
+}
+
