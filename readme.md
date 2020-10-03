@@ -4,5 +4,5 @@ To run app:
 ```
 
 ### TODO:
-  - Set up Node server
-  - Deploy to Heroku to test game view on actual device
+  - Add user registration
+  - Add user account managemetn

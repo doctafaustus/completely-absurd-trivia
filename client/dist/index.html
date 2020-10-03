@@ -141,15 +141,21 @@
       </section>
 
       <section class="board">
-        <h1 class="section-title">
-          <div class="section-title-inner">Leaderboard</div>
-        </h1>
         <ul class="contestant-list"></ul>
       </section>
     </div>
   </main>
 
+
   <script src="/game.da1e38ee.js"></script>
   <script src="/board.af0aecb3.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+  <script>var socket = io();
+console.log(socket.connected); // false
+
+socket.on('connect', function () {
+  console.log(socket.connected); // true
+});</script>
 </body>
 </html>

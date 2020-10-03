@@ -2,24 +2,6 @@
 
 
 section.board {
-  .section-title {
-    outline: solid 3px #000;
-    position: relative;
-    z-index: 1;
-    margin-bottom: 2rem;
-    text-align: center;
-    font-size: 1.8rem;
-
-    &:before {
-      @include dropShadow($black);
-    }
-
-    .section-title-inner {
-      background-color: $white;
-      padding: .6rem;
-    }
-  }
-
   .contestant-list {
     grid-gap: .2rem;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
