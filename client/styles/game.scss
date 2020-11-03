@@ -6,6 +6,34 @@ main {
 	padding: 0 4.5rem;
 }
 
+.card-object {
+  position: relative;
+  transition: 0.6s;
+  transform-style: preserve-3d;
+
+  &.show-board {
+    transform: rotateY(180deg);
+  }
+  
+  section.game-container,
+  section.board {
+    backface-visibility: hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+
+  section.game-container {
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  section.board {
+    transform: rotateY(180deg);
+  }
+}
+
 section.game-header {
 	outline: solid 3px $black;
 	position: relative;

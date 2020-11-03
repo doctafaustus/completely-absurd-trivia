@@ -1,0 +1,158 @@
+<html>
+<head>
+  <include src="head.html"></include>
+  <link rel="stylesheet" href="./styles/game.scss">
+  <link rel="stylesheet" href="./styles/board.scss">
+  <title>Completely Absurd Trivia | Game</title>
+</head>
+<body>
+  <main>
+    <section class="game-header">
+      <ul class="game-header-items">
+        <li class="game-header-item">
+          <span class="game-header-item-label">Score: </span>
+          <span class="game-header-item-value header-score">1,345</span>
+        </li>
+        <li class="game-header-item">
+          <span class="game-header-item-label">Rank: </span>
+          <span class="game-header-item-value header-rank">7/43</span>
+        </li>
+        <li class="game-header-item">
+          <span class="game-header-item-label">Accuracy: </span>
+          <span class="game-header-item-value header-accuracy">50%</span>
+        </li>
+      </ul>
+    </section>
+
+    <div class="card-object">
+      <section class="game-container">
+        <section class="contestants">
+          <ul class="contestant-list">
+            <li class="contestant">
+              <div class="contestant-top-row">
+                <span class="contestant-name">BilboBaggins</span>
+                <span class="contestant-rank">1</span>
+                <span class="lock"><img src="./images/lock-icon.png"></span>
+              </div>
+              <div class="contestant-avatar-container">
+                <img class="contestant-avatar" src="./images/avatar.jpg">
+              </div>
+              <div class="contestant-bottom-row">
+                <div class="answered-container">
+                  <span class="answered-btn a">A</span>
+                  <span class="answered-btn b">B</span>
+                  <span class="answered-btn c">C</span>
+                  <span class="answered-btn d">D</span>
+                </div>
+                <span class="contestant-score">1345</span>
+                <span class="contestant-score-plus">+100</span>
+              </div>
+            </li>
+            <li class="contestant">
+              <div class="contestant-top-row">
+                <span class="contestant-name">BarracudaDear6904</span>
+                <span class="contestant-rank">2</span>
+                <span class="lock"><img src="./images/lock-icon.png"></span>
+              </div>
+              <div class="contestant-avatar-container">
+                <img class="contestant-avatar" src="./images/avatar.jpg">
+              </div>
+              <div class="contestant-bottom-row">
+                <div class="answered-container">
+                  <span class="answered-btn a">A</span>
+                  <span class="answered-btn b">B</span>
+                  <span class="answered-btn c">C</span>
+                  <span class="answered-btn d">D</span>
+                </div>
+                <span class="contestant-score">1,300</span>
+                <span class="contestant-score-plus">+100</span>
+              </div>
+            </li>
+            <li class="contestant">
+              <div class="contestant-top-row">
+                <span class="contestant-name">Venask4</span>
+                <span class="contestant-rank">3</span>
+                <span class="lock"><img src="./images/lock-icon.png"></span>
+              </div>
+              <div class="contestant-avatar-container">
+                <img class="contestant-avatar" src="./images/avatar.jpg">
+              </div>
+              <div class="contestant-bottom-row">
+                <div class="answered-container">
+                  <span class="answered-btn a">A</span>
+                  <span class="answered-btn b">B</span>
+                  <span class="answered-btn c">C</span>
+                  <span class="answered-btn d">D</span>
+                </div>
+                <span class="contestant-score">1,299</span>
+                <span class="contestant-score-plus">+50</span>
+              </div>
+            </li>
+            <li class="contestant">
+              <div class="contestant-top-row">
+                <span class="contestant-name">JoeyPotato</span>
+                <span class="contestant-rank">4</span>
+                <span class="lock"><img src="./images/lock-icon.png"></span>
+              </div>
+              <div class="contestant-avatar-container">
+                <img class="contestant-avatar" src="./images/avatar.jpg">
+              </div>
+              <div class="contestant-bottom-row">
+                <div class="answered-container">
+                  <span class="answered-btn a">A</span>
+                  <span class="answered-btn b">B</span>
+                  <span class="answered-btn c">C</span>
+                  <span class="answered-btn d">D</span>
+                </div>
+                <span class="contestant-score">950</span>
+                <span class="contestant-score-plus">+500</span>
+              </div>
+            </li>
+          </ul> 
+        </section>
+        
+        <section class="question-container">
+          <div class="question-text">
+            What is the closest planet to the Sun?
+          </div>
+        </section>
+    
+        <section class="answer-container">
+          <ul class="answer-btn-list">
+            <li class="answer-btn-item">
+              <button id="answer-btn-a" class="answer" data-letter="a">Mars</button>
+            </li>
+            <li class="answer-btn-item">
+              <button id="answer-btn-b" class="answer" data-letter="b">Venus</button>
+            </li>
+            <li class="answer-btn-item">
+              <button id="answer-btn-c" class="answer" data-letter="c">Earth</button>
+            </li>
+            <li class="answer-btn-item">
+              <button id="answer-btn-d" class="answer" data-letter="d">Mercury</button>
+            </li>
+          </ul>
+        </section>
+      </section>
+
+      <section class="board">
+        <ul class="contestant-list"></ul>
+      </section>
+    </div>
+  </main>
+
+
+  <script src="./scripts/game.js"></script>
+  <script src="./scripts/board.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+
+  <script>
+    const socket = io();
+    console.log(socket.connected); // false
+
+    socket.on('connect', () => {
+      console.log(socket.connected); // true
+    });
+  </script>
+</body>
+</html>

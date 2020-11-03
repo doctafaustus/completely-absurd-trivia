@@ -9,6 +9,10 @@ app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/client/dist/index.html`);
 });
 
+app.get('/game', (req, res) => {
+  res.sendFile(`${__dirname}/client/dist/game.html`);
+});
+
 server.listen(process.env.PORT || 8080, () => {
   console.log('App listening on port 8080');
 });
