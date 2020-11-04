@@ -6,13 +6,14 @@
 <body>
   <button>Log In</button>
 
+  <button id="sign-out">Sign Out</button>
+
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
 
   <!-- TODO: Add SDKs for Firebase products that you want to use
       https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-analytics.js"></script>
 
   <script>
     // Your web app's Firebase configuration
@@ -30,7 +31,6 @@
 
     // Initialize Firebase
     firebase.initializeApp(firebaseConfig);
-    firebase.analytics();
   </script>
 
   <script>
@@ -44,6 +44,7 @@
         // The signed-in user info.
         const user = result.user;
         console.log('user', user);
+        addIfNew(user);
       }).catch(error => {
         const { code, message, email, credential } = error;
         console.log('Error signing in');
@@ -53,6 +54,32 @@
         console.log({ credential });
       });
     });
+
+    function addIfNew(user) {
+      fetch('/api/create-user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ authUser: user })
+      })
+      .then(response => response.json())
+      .then(data => {
+        console.log('/api/create-user response: \n', data);
+      });
+    }
+
+    document.querySelector('#sign-out').addEventListener('click', () => {
+      firebase.auth().signOut().then(function() {
+        console.log('Signed Out');
+      }, function(error) {
+        console.error('Sign Out Error', error);
+      });
+    });
+
+    // Might be better to use a loggedIn cookie since this takes a while:
+    firebase.auth().onAuthStateChanged(user => {
+      if (user) console.log('logged in', user);
+      else console.log('not logged in');
+    })
 
   </script>
 </body>
