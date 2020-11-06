@@ -4,7 +4,6 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
-const { connected } = require('process');
 
 // Cloudstore config
 let serviceAccount = process.env.SERVICE_ACCOUNT_KEY;
