@@ -21,14 +21,13 @@ document.querySelector('#log-in').addEventListener('click', logIn);
 // Log Out
 document.querySelector('#log-out').addEventListener('click', logOut);
 
-// Control loggedIn cookie when user signs in/out
+// Control loggedIn localStorage when user signs in/out
 firebase.auth().onAuthStateChanged(user => {
   if (user) {
     console.log('logged in', user);
-    utils.setCookie('loggedIn', user.email);
   } else {
     console.log('not logged in');
-    utils.deleteCookie('loggedIn');
+    localStorage.removeItem('user');
   }
 });
 
@@ -45,14 +44,15 @@ function logIn() {
 }
 
 function addIfNew(user) {
-  fetch('/api/create-user', {
+  fetch('/api/add-if-new', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ authUser: user })
   })
   .then(response => response.json())
   .then(data => {
-    console.log('/api/create-user response: \n', data);
+    console.log('/api/add-if-new response: \n', data);
+    localStorage.setItem('user', JSON.stringify(data));
   });
 }
 

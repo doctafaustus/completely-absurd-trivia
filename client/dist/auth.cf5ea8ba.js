@@ -124,41 +124,34 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var utils = {
-  getCookie: function getCookie(name) {
-    var nameEQ = "".concat(name, "=");
-    var ca = document.cookie.split(';');
-
-    for (var i = 0; i < ca.length; i++) {
-      var c = ca[i];
-
-      while (c.charAt(0) === ' ') {
-        c = c.substring(1, c.length);
-      }
-
-      if (c.indexOf(nameEQ) === 0) {
-        return c.substring(nameEQ.length, c.length);
-      }
-    }
-
-    return null;
-  },
-  setCookie: function setCookie(name, value, minutes) {
-    var expirationFragment = '';
-
-    if (minutes) {
-      var date = new Date();
-      var ms = minutes * 60 * 1000;
-      var expiration = date.getTime() + ms;
-      date.setTime(expiration);
-      expirationFragment = "; expires=".concat(date.toGMTString());
-    }
-
-    document.cookie = "".concat(name, "=").concat(value).concat(expirationFragment, "; path=/");
-  },
-  deleteCookie: function deleteCookie(name) {
-    document.cookie = "".concat(name, "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/");
-  }
+var utils = {// getCookie(name) {
+  //   const nameEQ = `${name}=`;
+  //   const ca = document.cookie.split(';');
+  //   for (let i = 0; i < ca.length; i++) {
+  //     let c = ca[i];
+  //     while (c.charAt(0) === ' ') {
+  //       c = c.substring(1, c.length);
+  //     }
+  //     if (c.indexOf(nameEQ) === 0) {
+  //       return c.substring(nameEQ.length, c.length);
+  //     }
+  //   }
+  //   return null;
+  // },
+  // setCookie(name, value, minutes) {
+  //   let expirationFragment = '';
+  //   if (minutes) {
+  //     const date = new Date();
+  //     const ms = minutes * 60 * 1000;
+  //     const expiration = date.getTime() + ms;
+  //     date.setTime(expiration);
+  //     expirationFragment = `; expires=${date.toGMTString()}`;
+  //   }
+  //   document.cookie = `${name}=${value}${expirationFragment}; path=/`;
+  // },
+  // deleteCookie(name) {
+  //   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+  // }
 };
 var _default = utils;
 exports.default = _default;
@@ -185,17 +178,14 @@ var googleProvider = new firebase.auth.GoogleAuthProvider(); // Log In
 
 document.querySelector('#log-in').addEventListener('click', logIn); // Log Out
 
-document.querySelector('#log-out').addEventListener('click', logOut); // Control loggedIn cookie when user signs in/out
+document.querySelector('#log-out').addEventListener('click', logOut); // Control loggedIn localStorage when user signs in/out
 
 firebase.auth().onAuthStateChanged(function (user) {
   if (user) {
     console.log('logged in', user);
-
-    _utils.default.setCookie('loggedIn', user.email);
   } else {
     console.log('not logged in');
-
-    _utils.default.deleteCookie('loggedIn');
+    localStorage.removeItem('user');
   }
 });
 
@@ -214,7 +204,7 @@ function logIn() {
 }
 
 function addIfNew(user) {
-  fetch('/api/create-user', {
+  fetch('/api/add-if-new', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
@@ -225,7 +215,8 @@ function addIfNew(user) {
   }).then(function (response) {
     return response.json();
   }).then(function (data) {
-    console.log('/api/create-user response: \n', data);
+    console.log('/api/add-if-new response: \n', data);
+    localStorage.setItem('user', JSON.stringify(data));
   });
 }
 
@@ -236,7 +227,7 @@ function logOut() {
     return console.error('Sign Out Error', error);
   });
 }
-},{"../utils/utils.js":"utils/utils.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../utils/utils.js":"utils/utils.js"}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -264,7 +255,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "61976" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55215" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -440,5 +431,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/auth.js"], null)
+},{}]},{},["../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/auth.js"], null)
 //# sourceMappingURL=/auth.cf5ea8ba.js.map

@@ -4,8 +4,7 @@ const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
 const admin = require('firebase-admin');
-const { resolve } = require('path');
-const { auth } = require('firebase-admin');
+const { connected } = require('process');
 
 // Cloudstore config
 let serviceAccount = process.env.SERVICE_ACCOUNT_KEY;
@@ -24,22 +23,25 @@ app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/client/dist/index.html`);
 });
 
+app.get('/lobby', (req, res) => {
+  res.sendFile(`${__dirname}/client/dist/lobby.html`);
+});
+
 app.get('/game', (req, res) => {
   res.sendFile(`${__dirname}/client/dist/game.html`);
 });
 
-app.post('/api/create-user', async (req, res) => {
-  console.log('/api/create-user');
+app.post('/api/add-if-new', async (req, res) => {
+  console.log('/api/add-if-new');
 
   const { authUser } = req.body;
-  console.log('authUser', authUser);
-
   const usersCollection = db.collection('users');
   const docRef = usersCollection.doc(authUser.uid);
   
   const doc = await docRef.get();
   if (doc.exists) {
     docRef.update({ lastLoggedIn: new Date().getTime() });
+    res.json(doc.data());
   } else {
     const randomNum = Math.ceil(Math.random() * 1000);
     await docRef.set({
@@ -48,10 +50,9 @@ app.post('/api/create-user', async (req, res) => {
       created: new Date().getTime(),
       lastLoggedIn: new Date().getTime()
     });
+    const updatedDoc = await docRef.get();
+    res.json(updatedDoc.data());
   }
-
-  console.log('done');
-  res.json({ done: true });
 });
 
 
@@ -60,6 +61,51 @@ server.listen(process.env.PORT || 8080, () => {
 });
 
 
-io.on('connection', socket => {
-  console.log('hello');
-});
+const lobbyPeople = {};
+const users = [];
+const lobbyIO = io.of('/lobby');
+lobbyIO.on('connection', onConnect);
+
+
+function onConnect(socket) {
+ 
+  // Emit join lobby event
+  socket.emit('join');
+
+  // Register socket to username
+  socket.on('join', username => {
+    socket.username = username;
+
+    if (!lobbyPeople[username]) {
+      lobbyPeople[username] = {
+        username,
+        partyLeader: false,
+        sockets: { [socket.id]: true }
+      };
+    } else {
+      lobbyPeople[username].sockets[socket.id] = true;
+    }
+
+    updatePeople();
+  });
+
+  // Update client count on disconnect
+  socket.on('disconnect', () => {  
+    const player = lobbyPeople[socket.username];
+    if (!player) return console.log('No player found'); 
+    const playerSocketKey = Object.keys(player.sockets).find(key => key === socket.id);
+    delete player.sockets[playerSocketKey];
+
+    // If player has no more open sockets then delete from lobbyPeople
+    if (!Object.keys(player.sockets).length) {
+      delete lobbyPeople[socket.username];
+    }
+
+    updatePeople();
+  });
+}
+
+
+function updatePeople() {
+  lobbyIO.emit('updatePeople', lobbyPeople);
+}

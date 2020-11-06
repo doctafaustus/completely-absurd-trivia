@@ -1,0 +1,32 @@
+<html>
+<head>
+  <include src="head.html"></include>
+  <title>Completely Absurd Trivia | Lobby</title>
+</head>
+<body style="padding: 20px">
+  <h1>Game Lobby</h1>
+
+  <section class="friends">
+    <h3>Friends</h3>
+    <ul class="friend-list">
+      <li>
+        <span class="friend-username">BarracudaDear6904</span>
+        <button class="inivte">Invite</button>
+      <li>
+        <span class="friend-username">Venask4</span>
+        <button class="inivte">Invite</button>
+      </li>
+      <li>
+        <span class="friend-username">JoeyPotato</span>
+        <button class="inivte">Invite</button>
+      </li>
+    </ul>
+  </section>
+
+  <h3>Player Count: <span id="player-count"></span></h3>
+  <h3>Players</h3>
+  <ol id="player-list"></ol>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
+  <script src="./scripts/lobby.js"></script>
+</body>
