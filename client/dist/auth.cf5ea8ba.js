@@ -117,56 +117,126 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"scripts/game.js":[function(require,module,exports) {
-var answerBtns = document.querySelectorAll('.answer');
+})({"utils/utils.js":[function(require,module,exports) {
+"use strict";
 
-function bindBtnListeners() {
-  answerBtns.forEach(function (btn) {
-    return btn.addEventListener('click', handleGuess);
-  });
-}
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var utils = {
+  getCookie: function getCookie(name) {
+    var nameEQ = "".concat(name, "=");
+    var ca = document.cookie.split(';');
 
-function handleGuess(e) {
-  e.target.classList.add('selected');
-  answerBtns.forEach(function (btn) {
-    return btn.disabled = true;
-  });
-}
+    for (var i = 0; i < ca.length; i++) {
+      var c = ca[i];
 
-function init() {
-  bindBtnListeners();
-}
+      while (c.charAt(0) === ' ') {
+        c = c.substring(1, c.length);
+      }
 
-init();
-animateValue({
-  selector: '.contestant-score',
-  endValue: 2000
+      if (c.indexOf(nameEQ) === 0) {
+        return c.substring(nameEQ.length, c.length);
+      }
+    }
+
+    return null;
+  },
+  setCookie: function setCookie(name, value, minutes) {
+    var expirationFragment = '';
+
+    if (minutes) {
+      var date = new Date();
+      var ms = minutes * 60 * 1000;
+      var expiration = date.getTime() + ms;
+      date.setTime(expiration);
+      expirationFragment = "; expires=".concat(date.toGMTString());
+    }
+
+    document.cookie = "".concat(name, "=").concat(value).concat(expirationFragment, "; path=/");
+  },
+  deleteCookie: function deleteCookie(name) {
+    document.cookie = "".concat(name, "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/");
+  }
+};
+var _default = utils;
+exports.default = _default;
+},{}],"scripts/auth.js":[function(require,module,exports) {
+"use strict";
+
+var _utils = _interopRequireDefault(require("../utils/utils.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+// Initialize firebase
+var firebaseConfig = {
+  apiKey: "AIzaSyCPNbwrNgjrpf491e3WJwWQwnNqPJ0R7XE",
+  authDomain: "completely-absurd-trivia-b939b.firebaseapp.com",
+  databaseURL: "https://completely-absurd-trivia-b939b.firebaseio.com",
+  projectId: "completely-absurd-trivia-b939b",
+  storageBucket: "completely-absurd-trivia-b939b.appspot.com",
+  messagingSenderId: "882068649922",
+  appId: "1:882068649922:web:540a53211b1d913bf8885b",
+  measurementId: "G-DV7RDPVL0Q"
+};
+firebase.initializeApp(firebaseConfig);
+var googleProvider = new firebase.auth.GoogleAuthProvider(); // Log In
+
+document.querySelector('#log-in').addEventListener('click', logIn); // Log Out
+
+document.querySelector('#log-out').addEventListener('click', logOut); // Control loggedIn cookie when user signs in/out
+
+firebase.auth().onAuthStateChanged(function (user) {
+  if (user) {
+    console.log('logged in', user);
+
+    _utils.default.setCookie('loggedIn', user.email);
+  } else {
+    console.log('not logged in');
+
+    _utils.default.deleteCookie('loggedIn');
+  }
 });
 
-function animateValue(_ref) {
-  var selector = _ref.selector,
-      endValue = _ref.endValue;
-  var el = document.querySelector(selector);
-  var range = endValue - Number(el.innerHTML);
-  var duration = 500;
-  var stepTime = 50; // get current time and calculate desired end time
-
-  var startTime = new Date().getTime();
-  var endTime = startTime + duration;
-  var timer;
-
-  function run() {
-    var now = new Date().getTime();
-    var remaining = Math.max((endTime - now) / duration, 0);
-    var value = Math.round(endValue - remaining * range);
-    el.innerHTML = value;
-    if (value == endValue) clearInterval(timer);
-  }
-
-  timer = setInterval(run, stepTime);
-  run();
+function logIn() {
+  firebase.auth().signInWithPopup(googleProvider).then(function (result) {
+    var user = result.user;
+    console.log('user', user);
+    addIfNew(user);
+  }).catch(function (error) {
+    var code = error.code,
+        message = error.message,
+        email = error.email,
+        credential = error.credential;
+    console.log("Error signing in: ".concat(code, " - ").concat(message, " - ").concat(email, " - ").concat(credential));
+  });
 }
-},{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+function addIfNew(user) {
+  fetch('/api/create-user', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      authUser: user
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log('/api/create-user response: \n', data);
+  });
+}
+
+function logOut() {
+  firebase.auth().signOut().then(function () {
+    console.log('Signed Out');
+  }, function (error) {
+    return console.error('Sign Out Error', error);
+  });
+}
+},{"../utils/utils.js":"utils/utils.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -370,5 +440,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/game.js"], null)
-//# sourceMappingURL=/game.da1e38ee.js.map
+},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/auth.js"], null)
+//# sourceMappingURL=/auth.cf5ea8ba.js.map

@@ -1,8 +1,7 @@
 To run app:
 ```js
-  parcel index.html
+  npm start
 ```
 
 ### TODO:
-  - Add user registration
-  - Add user account managemetn
+  - Add home page

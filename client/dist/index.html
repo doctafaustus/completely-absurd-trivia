@@ -9,88 +9,13 @@
   <title>Completely Absurd Trivia | Home</title>
 <script src="/reset.323912cb.js"></script><script src="/global.e2a6b877.js"></script></head>
 <body>
-  <button>Log In</button>
+  <button id="log-in">Log In</button>
+  <button id="log-out">Sign Out</button>
+  <h1>Welcome</h1>
 
-  <button id="sign-out">Sign Out</button>
-
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <!-- Core Firebase JS SDK and additional SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-      https://firebase.google.com/docs/web/setup#available-libraries -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-
-  <script>// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
-var firebaseConfig = {
-  apiKey: "AIzaSyCPNbwrNgjrpf491e3WJwWQwnNqPJ0R7XE",
-  authDomain: "completely-absurd-trivia-b939b.firebaseapp.com",
-  databaseURL: "https://completely-absurd-trivia-b939b.firebaseio.com",
-  projectId: "completely-absurd-trivia-b939b",
-  storageBucket: "completely-absurd-trivia-b939b.appspot.com",
-  messagingSenderId: "882068649922",
-  appId: "1:882068649922:web:540a53211b1d913bf8885b",
-  measurementId: "G-DV7RDPVL0Q"
-}; // Initialize Firebase
-
-firebase.initializeApp(firebaseConfig);</script>
-
-  <script>var provider = new firebase.auth.GoogleAuthProvider();
-document.querySelector('button').addEventListener('click', function () {
-  firebase.auth().signInWithPopup(provider).then(function (result) {
-    // This gives you a Google Access Token. You can use it to access the Google API.
-    var token = result.credential.accessToken; // The signed-in user info.
-
-    var user = result.user;
-    console.log('user', user);
-    addIfNew(user);
-  }).catch(function (error) {
-    var code = error.code,
-        message = error.message,
-        email = error.email,
-        credential = error.credential;
-    console.log('Error signing in');
-    console.log({
-      code: code
-    });
-    console.log({
-      message: message
-    });
-    console.log({
-      email: email
-    });
-    console.log({
-      credential: credential
-    });
-  });
-});
-
-function addIfNew(user) {
-  fetch('/api/create-user', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      authUser: user
-    })
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    console.log('/api/create-user response: \n', data);
-  });
-}
-
-document.querySelector('#sign-out').addEventListener('click', function () {
-  firebase.auth().signOut().then(function () {
-    console.log('Signed Out');
-  }, function (error) {
-    console.error('Sign Out Error', error);
-  });
-}); // Might be better to use a loggedIn cookie since this takes a while:
-
-firebase.auth().onAuthStateChanged(function (user) {
-  if (user) console.log('logged in', user);else console.log('not logged in');
-});</script>
+  <script src="/auth.cf5ea8ba.js"></script>
 </body>
 </html>

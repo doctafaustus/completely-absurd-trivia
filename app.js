@@ -41,8 +41,10 @@ app.post('/api/create-user', async (req, res) => {
   if (doc.exists) {
     docRef.update({ lastLoggedIn: new Date().getTime() });
   } else {
+    const randomNum = Math.ceil(Math.random() * 1000);
     await docRef.set({
       email: authUser.email,
+      username: `newbie_${randomNum}${(+new Date).toString(36)}`,
       created: new Date().getTime(),
       lastLoggedIn: new Date().getTime()
     });
