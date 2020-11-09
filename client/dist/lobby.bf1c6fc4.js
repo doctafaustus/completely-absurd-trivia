@@ -117,7 +117,69 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"scripts/lobby.js":[function(require,module,exports) {
+})({"utils/utils.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var utils = {
+  debounce: function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+      var context = this,
+          args = arguments;
+
+      var later = function later() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  } // getCookie(name) {
+  //   const nameEQ = `${name}=`;
+  //   const ca = document.cookie.split(';');
+  //   for (let i = 0; i < ca.length; i++) {
+  //     let c = ca[i];
+  //     while (c.charAt(0) === ' ') {
+  //       c = c.substring(1, c.length);
+  //     }
+  //     if (c.indexOf(nameEQ) === 0) {
+  //       return c.substring(nameEQ.length, c.length);
+  //     }
+  //   }
+  //   return null;
+  // },
+  // setCookie(name, value, minutes) {
+  //   let expirationFragment = '';
+  //   if (minutes) {
+  //     const date = new Date();
+  //     const ms = minutes * 60 * 1000;
+  //     const expiration = date.getTime() + ms;
+  //     date.setTime(expiration);
+  //     expirationFragment = `; expires=${date.toGMTString()}`;
+  //   }
+  //   document.cookie = `${name}=${value}${expirationFragment}; path=/`;
+  // },
+  // deleteCookie(name) {
+  //   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
+  // }
+
+};
+var _default = utils;
+exports.default = _default;
+},{}],"scripts/lobby.js":[function(require,module,exports) {
+"use strict";
+
+var _utils = _interopRequireDefault(require("../utils/utils.js"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 if (localStorage.getItem('user')) {
   console.log('init');
   initLobby();
@@ -132,6 +194,35 @@ function initLobby() {
     lobbySocket.emit('join', username);
   });
   lobbySocket.on('updatePeople', updatePeople);
+  initSearchListener();
+}
+
+function initSearchListener() {
+  var findFriendInput = document.querySelector('#find-friend-input');
+  var debounceThreshold = 100;
+  findFriendInput.addEventListener('keyup', _utils.default.debounce(function (e) {
+    var value = e.target.value;
+    if (value.trim() === '') return;
+    fetch('/api/find-friend', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        searchTerm: value
+      })
+    }).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      console.log('/api/find-friend: \n', data);
+      buildSearchResultList(data);
+    });
+  }, debounceThreshold));
+}
+
+function buildSearchResultList(results) {
+  var friendList = document.querySelector('.friend-list');
+  console.log('friendList', friendList);
 }
 
 function updatePeople(lobbyPeople) {
@@ -139,10 +230,10 @@ function updatePeople(lobbyPeople) {
   var playerList = document.querySelector('#player-list');
   playerCount.textContent = Object.values(lobbyPeople).length;
   playerList.innerHTML = Object.values(lobbyPeople).map(function (player) {
-    return "<li>".concat(player.username, "</li>");
+    return "<li>\n      <span class=\"player\">".concat(player.username, "</span>\n      <button class=\"invite\">Invite</button>\n    </li>");
   }).join('');
 }
-},{}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"../utils/utils.js":"utils/utils.js"}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -170,7 +261,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55215" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58248" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

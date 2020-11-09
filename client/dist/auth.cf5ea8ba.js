@@ -124,7 +124,24 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 exports.default = void 0;
-var utils = {// getCookie(name) {
+var utils = {
+  debounce: function debounce(func, wait, immediate) {
+    var timeout;
+    return function () {
+      var context = this,
+          args = arguments;
+
+      var later = function later() {
+        timeout = null;
+        if (!immediate) func.apply(context, args);
+      };
+
+      var callNow = immediate && !timeout;
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+      if (callNow) func.apply(context, args);
+    };
+  } // getCookie(name) {
   //   const nameEQ = `${name}=`;
   //   const ca = document.cookie.split(';');
   //   for (let i = 0; i < ca.length; i++) {
@@ -152,6 +169,7 @@ var utils = {// getCookie(name) {
   // deleteCookie(name) {
   //   document.cookie = `${name}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/`;
   // }
+
 };
 var _default = utils;
 exports.default = _default;
@@ -255,7 +273,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55215" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58248" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

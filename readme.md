@@ -10,3 +10,4 @@ To run app:
 
 ### TODO:
   - Add home page
+  - Add option to change username (must be all lowercase since Cloudstore sucks)

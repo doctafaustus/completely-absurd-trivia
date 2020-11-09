@@ -54,6 +54,25 @@ app.post('/api/add-if-new', async (req, res) => {
   }
 });
 
+app.post('/api/find-friend', async (req, res) => {
+  console.log('/api/find-friend');
+
+  const { searchTerm } = req.body;
+  const usersCollection = db.collection('users');
+
+  // Find all users whose searchTerm starts with search term
+  const query = await usersCollection.where('username', '>=', searchTerm).where('username', '<=', searchTerm+ '\uf8ff');
+
+  query.get().then(querySnapshot => {
+    const result = querySnapshot.docs.map(doc => doc.data().username);
+    res.json(result);
+  })
+  .catch(error => {
+    console.log(`Error getting documents: ${error}`);
+    res.json([]);
+  });
+});
+
 
 server.listen(process.env.PORT || 8080, () => {
   console.log('App listening on port 8080');
@@ -78,8 +97,9 @@ function onConnect(socket) {
     if (!lobbyPeople[username]) {
       lobbyPeople[username] = {
         username,
-        partyLeader: false,
-        sockets: { [socket.id]: true }
+        sockets: { [socket.id]: true },
+        party: [],
+        isPartyLeader() { return this.party.length }
       };
     } else {
       lobbyPeople[username].sockets[socket.id] = true;
