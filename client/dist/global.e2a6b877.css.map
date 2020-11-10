@@ -1,1 +1,1 @@
-{"version":3,"sources":["styles\\global.scss"],"names":[],"mappings":"AAAA;EACC","file":"global.e2a6b877.css","sourceRoot":"..","sourcesContent":["body {\r\n\tfont-family: 'Inter', sans-serif;\r\n}"]}
+{"version":3,"sources":["styles/global.scss"],"names":[],"mappings":"AAAA;EACC;EACA;;;AAGD;EACC","file":"global.e2a6b877.css","sourceRoot":"..","sourcesContent":["body {\n\tfont-family: 'Inter', sans-serif;\n\tpadding: 20px;\n}\n\nnav {\n\tmargin-bottom: 3rem;\n}"]}

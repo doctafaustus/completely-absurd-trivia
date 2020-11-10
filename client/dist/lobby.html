@@ -8,14 +8,24 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
   <title>Completely Absurd Trivia | Lobby</title>
 </head>
-<body style="padding: 20px">
+<body>
+  <nav>
+  <a href="/">Home</a>
+  <a href="/lobby">Lobby</a>
+  <a href="/game">Game</a>
+</nav>
+
   <h1>Game Lobby</h1>
 
   <section class="find-friends">
-    <h3>Find Friends</h3>
+    <h3>Add Friends</h3>
     <input id="find-friend-input" type="text">
     <ul class="friend-list"></ul>
+  </section>
 
+  <section class="my-friends">
+    <h3>My Friends</h3>
+    <ul class="my-friend-list"></ul>
   </section>
 
   <h3>Player Count: <span id="player-count"></span></h3>

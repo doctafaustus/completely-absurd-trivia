@@ -14,7 +14,6 @@ admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const db = admin.firestore();
 
 
-
 app.use(express.static(`${__dirname}/client/dist`));
 app.use(bodyParser.json({ limit: '1mb' }));
 
@@ -40,17 +39,18 @@ app.post('/api/add-if-new', async (req, res) => {
   const doc = await docRef.get();
   if (doc.exists) {
     docRef.update({ lastLoggedIn: new Date().getTime() });
-    res.json(doc.data());
+    res.json({ id: doc.id, ...doc.data() });
   } else {
     const randomNum = Math.ceil(Math.random() * 1000);
     await docRef.set({
       email: authUser.email,
       username: `newbie_${randomNum}${(+new Date).toString(36)}`,
+      friends: [],
       created: new Date().getTime(),
       lastLoggedIn: new Date().getTime()
     });
     const updatedDoc = await docRef.get();
-    res.json(updatedDoc.data());
+    res.json({ id: updatedDoc.id, ...updatedDoc.data() });
   }
 });
 
@@ -73,6 +73,36 @@ app.post('/api/find-friend', async (req, res) => {
   });
 });
 
+app.post('/api/add-friend', async (req, res) => {
+  console.log('/api/add-friend');
+
+  const { currentUserID, friendToAdd } = req.body;
+  const usersCollection = db.collection('users');
+
+  const docRef = usersCollection.doc(currentUserID);
+  const doc = await docRef.get();
+
+  if (!doc.exists) return res.json({ result: 'Current user not found' });
+  await docRef.update({
+    friends: admin.firestore.FieldValue.arrayUnion(friendToAdd)
+  });
+
+  res.json({ result: `Friend added: ${friendToAdd}` });
+});
+
+app.post('/api/fetch-friends', async (req, res) => {
+  console.log('/api/fetch-friends');
+
+  const { currentUserID } = req.body;
+  const usersCollection = db.collection('users');
+
+  const docRef = usersCollection.doc(currentUserID);
+  const doc = await docRef.get();
+  if (!doc.exists) return res.json([]);
+  res.json(doc.data().friends);
+});
+
+
 
 server.listen(process.env.PORT || 8080, () => {
   console.log('App listening on port 8080');
@@ -80,7 +110,6 @@ server.listen(process.env.PORT || 8080, () => {
 
 
 const lobbyPeople = {};
-const users = [];
 const lobbyIO = io.of('/lobby');
 lobbyIO.on('connection', onConnect);
 

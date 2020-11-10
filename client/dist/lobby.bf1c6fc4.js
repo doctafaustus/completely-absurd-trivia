@@ -195,14 +195,43 @@ function initLobby() {
   });
   lobbySocket.on('updatePeople', updatePeople);
   initSearchListener();
+  fetchFriends();
+}
+
+function fetchFriends() {
+  var currentUserID = getCurrentUserID();
+  var myFriendList = document.querySelector('.my-friend-list');
+  fetch('/api/fetch-friends', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      currentUserID: currentUserID
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log('/api/fetch-friends: \n', data);
+    var myFriendListHTML = data.map(function (friend) {
+      return "<li class=\"friend\">\n        <span>".concat(friend, "</span>\n        <button data-friend=\"").concat(friend, "\">Remove Friend</button>\n      </li>");
+    }).join('');
+    myFriendList.innerHTML = myFriendListHTML;
+  });
 }
 
 function initSearchListener() {
+  var friendList = document.querySelector('.friend-list');
   var findFriendInput = document.querySelector('#find-friend-input');
   var debounceThreshold = 100;
   findFriendInput.addEventListener('keyup', _utils.default.debounce(function (e) {
     var value = e.target.value;
-    if (value.trim() === '') return;
+
+    if (value.trim() === '') {
+      document.querySelector('.friend-list').innerHTML = '';
+      return;
+    }
+
     fetch('/api/find-friend', {
       method: 'POST',
       headers: {
@@ -218,11 +247,38 @@ function initSearchListener() {
       buildSearchResultList(data);
     });
   }, debounceThreshold));
+  friendList.addEventListener('click', function (e) {
+    if (e.target.matches('.add-friend')) addFriend(e.target.dataset.friend);
+  });
 }
 
 function buildSearchResultList(results) {
   var friendList = document.querySelector('.friend-list');
-  console.log('friendList', friendList);
+  var friendListHTML = results.map(function (friend) {
+    return "<li class=\"friend-item\">\n      <span>".concat(friend, "</span>\n      <button class=\"add-friend\" data-friend=\"").concat(friend, "\">Add Friend</button>\n    </li>");
+  }).join('');
+  if (!friendListHTML) friendListHTML = '<li>No results found</li>';
+  friendList.innerHTML = friendListHTML;
+}
+
+function addFriend(friendToAdd) {
+  var currentUserID = getCurrentUserID();
+  if (!currentUserID) return;
+  fetch('/api/add-friend', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      currentUserID: currentUserID,
+      friendToAdd: friendToAdd
+    })
+  }).then(function (response) {
+    return response.json();
+  }).then(function (data) {
+    console.log('/api/add-friend: \n', data);
+    fetchFriends();
+  });
 }
 
 function updatePeople(lobbyPeople) {
@@ -233,7 +289,11 @@ function updatePeople(lobbyPeople) {
     return "<li>\n      <span class=\"player\">".concat(player.username, "</span>\n      <button class=\"invite\">Invite</button>\n    </li>");
   }).join('');
 }
-},{"../utils/utils.js":"utils/utils.js"}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+function getCurrentUserID() {
+  return JSON.parse(localStorage.getItem('user') || '{}').id;
+}
+},{"../utils/utils.js":"utils/utils.js"}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -261,7 +321,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58248" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52360" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -437,5 +497,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/lobby.js"], null)
+},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/lobby.js"], null)
 //# sourceMappingURL=/lobby.bf1c6fc4.js.map

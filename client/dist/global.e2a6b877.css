@@ -1,5 +1,10 @@
 body {
   font-family: "Inter", sans-serif;
+  padding: 20px;
+}
+
+nav {
+  margin-bottom: 3rem;
 }
 
 /*# sourceMappingURL=/global.e2a6b877.css.map */
