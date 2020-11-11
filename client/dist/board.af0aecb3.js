@@ -132,7 +132,7 @@ var contestantsHTML = contestants.map(function (contestant, index) {
   return "<li class=\"contestant\">\n      <div class=\"contestant-top-row\">\n        <span class=\"contestant-name\">".concat(contestant.name, "</span>\n        <span class=\"contestant-rank\">").concat(index + 1, "</span>\n      </div>\n      <div class=\"contestant-avatar-container\">\n        <img class=\"contestant-avatar\" src=\"/avatar.64783176.jpg\">\n      </div>\n      <div class=\"contestant-bottom-row\">\n        <span class=\"contestant-score\">").concat(contestant.score, "</span>\n      </div>\n    </li>");
 }).join('');
 contestantList.insertAdjacentHTML('afterbegin', contestantsHTML);
-},{}],"../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -160,7 +160,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52360" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58079" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -336,5 +336,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../usr/local/lib/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/board.js"], null)
+},{}]},{},["../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","scripts/board.js"], null)
 //# sourceMappingURL=/board.af0aecb3.js.map

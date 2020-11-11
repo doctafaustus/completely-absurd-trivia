@@ -1,5 +1,12 @@
 import utils from '../utils/utils.js';
 
+const playerCount = document.querySelector('#player-count');
+const playerList = document.querySelector('#player-list'); 
+const myFriendList = document.querySelector('.my-friend-list');
+const findFriendResults = document.querySelector('.find-friend-results');
+const findFriendInput = document.querySelector('#find-friend-input');
+
+
 if (localStorage.getItem('user')) {
   console.log('init');
   initLobby();
@@ -18,25 +25,49 @@ function initLobby() {
   lobbySocket.on('updatePeople', updatePeople); 
 
   initSearchListener();
+  initFriendRemoveListener();
   fetchFriends();
 }
 
+function initFriendRemoveListener() {
+  myFriendList.addEventListener('click', e => {
+    if (e.target.matches('.remove-friend')) removeFriend(e.target.dataset.friend);
+  });
+}
+
+function removeFriend(friendToRemove) {
+  const currentUserID = getCurrentUserValue('id');
+  if (!currentUserID) return;
+   
+  fetch('/api/remove-friend', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ currentUserID, friendToRemove })
+  })
+  .then(response => response.json())
+  .then(data => {
+    console.log('/api/remove-friend: \n', data);
+    fetchFriends();
+  });
+}
+
+
+
 function fetchFriends() {
-  const currentUserID = getCurrentUserID();
-  const myFriendList = document.querySelector('.my-friend-list');
+  const currentUserID = getCurrentUserValue('id');
 
   fetch('/api/fetch-friends', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ currentUserID })
   })
-  .then(response => response.json())
+  .then(response =>response.json())
   .then(data => {
     console.log('/api/fetch-friends: \n', data);
     const myFriendListHTML = data.map(friend => {
       return `<li class="friend">
         <span>${friend}</span>
-        <button data-friend="${friend}">Remove Friend</button>
+        <button class="remove-friend" data-friend="${friend}">Remove Friend</button>
       </li>`;
     }).join(''); 
 
@@ -45,17 +76,12 @@ function fetchFriends() {
 }
 
 function initSearchListener() {
-  const friendList = document.querySelector('.friend-list');
-  const findFriendInput = document.querySelector('#find-friend-input');
   const debounceThreshold = 100;
 
   findFriendInput.addEventListener('keyup', utils.debounce(e => {
     const { value } = e.target;
 
-    if (value.trim() === '') {
-      document.querySelector('.friend-list').innerHTML = '';
-      return;
-    }
+    if (value.trim() === '') return findFriendResults.innerHTML = '';
 
     fetch('/api/find-friend', {
       method: 'POST',
@@ -70,27 +96,31 @@ function initSearchListener() {
 
   }, debounceThreshold));
 
-  friendList.addEventListener('click', e => {
+  findFriendResults.addEventListener('click', e => {
     if (e.target.matches('.add-friend')) addFriend(e.target.dataset.friend);
   });
 }
 
 function buildSearchResultList(results) {
-  const friendList = document.querySelector('.friend-list');
-  let friendListHTML = results.map(friend => {
+  const currentUserUsername = getCurrentUserValue('username');
+  const filteredResults = results.filter(result => {
+    return result !== currentUserUsername;
+  });
+
+  let findFriendResultsHTML = filteredResults.map(friend => {
     return `<li class="friend-item">
       <span>${friend}</span>
       <button class="add-friend" data-friend="${friend}">Add Friend</button>
     </li>`;
   }).join('');
   
-  if (!friendListHTML) friendListHTML = '<li>No results found</li>';
-  friendList.innerHTML = friendListHTML;
+  if (!findFriendResultsHTML) findFriendResultsHTML = '<li>No results found</li>';
+  findFriendResults.innerHTML = findFriendResultsHTML;
 }
 
 function addFriend(friendToAdd) {
 
-  const currentUserID = getCurrentUserID();
+  const currentUserID = getCurrentUserValue('id');
   if (!currentUserID) return;
    
   fetch('/api/add-friend', {
@@ -105,10 +135,8 @@ function addFriend(friendToAdd) {
   });
 }
 
-function updatePeople(lobbyPeople) {
-  const playerCount = document.querySelector('#player-count');
-  const playerList = document.querySelector('#player-list'); 
 
+function updatePeople(lobbyPeople) {
   playerCount.textContent = Object.values(lobbyPeople).length;
   playerList.innerHTML = Object.values(lobbyPeople).map(player => {
     return `<li>
@@ -119,6 +147,6 @@ function updatePeople(lobbyPeople) {
 }
 
 
-function getCurrentUserID() {
-  return JSON.parse(localStorage.getItem('user') || '{}').id;
+function getCurrentUserValue(value) {
+  return JSON.parse(localStorage.getItem('user') || '{}')[value];
 }

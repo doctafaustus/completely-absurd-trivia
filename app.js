@@ -90,6 +90,23 @@ app.post('/api/add-friend', async (req, res) => {
   res.json({ result: `Friend added: ${friendToAdd}` });
 });
 
+app.post('/api/remove-friend', async (req, res) => {
+  console.log('/api/remove-friend');
+
+  const { currentUserID, friendToRemove } = req.body;
+  const usersCollection = db.collection('users');
+
+  const docRef = usersCollection.doc(currentUserID);
+  const doc = await docRef.get();
+
+  if (!doc.exists) return res.json({ result: 'Current user not found' });
+  await docRef.update({
+    friends: admin.firestore.FieldValue.arrayRemove(friendToRemove)
+  });
+
+  res.json({ result: `Friend removed: ${friendToRemove}` });
+});
+
 app.post('/api/fetch-friends', async (req, res) => {
   console.log('/api/fetch-friends');
 
@@ -98,7 +115,7 @@ app.post('/api/fetch-friends', async (req, res) => {
 
   const docRef = usersCollection.doc(currentUserID);
   const doc = await docRef.get();
-  if (!doc.exists) return res.json([]);
+  if (!doc.exists) res.json([]);
   res.json(doc.data().friends);
 });
 
