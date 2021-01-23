@@ -195,40 +195,65 @@ if (localStorage.getItem('user')) {
 
 function initLobby() {
   var lobbySocket = io('/lobby');
-  var username = JSON.parse(localStorage.getItem('user')).username;
+  var user = JSON.parse(localStorage.getItem('user'));
+  document.querySelector('#my-email').textContent = user.email;
+  document.querySelector('#my-name').textContent = user.username;
   lobbySocket.on('connect', function () {
-    lobbySocket.emit('join', username);
+    lobbySocket.emit('join', user.username);
   });
   lobbySocket.on('updatePeople', updatePeople);
+  lobbySocket.on('inviteReceived', displayInvite);
+  lobbySocket.on('partyUpdated', displayParty);
   initSearchListener();
   initFriendRemoveListener();
+  initInviteListener();
   fetchFriends();
-}
 
-function initFriendRemoveListener() {
-  myFriendList.addEventListener('click', function (e) {
-    if (e.target.matches('.remove-friend')) removeFriend(e.target.dataset.friend);
-  });
-}
+  function displayParty(partyList) {
+    document.querySelector('#party-members').innerHTML = partyList.map(function (member) {
+      return "<li>".concat(member, "</li>");
+    }).join('');
+  }
 
-function removeFriend(friendToRemove) {
-  var currentUserID = getCurrentUserValue('id');
-  if (!currentUserID) return;
-  fetch('/api/remove-friend', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      currentUserID: currentUserID,
-      friendToRemove: friendToRemove
-    })
-  }).then(function (response) {
-    return response.json();
-  }).then(function (data) {
-    console.log('/api/remove-friend: \n', data);
-    fetchFriends();
-  });
+  function initInviteListener() {
+    var partyInviteEl = document.querySelector('#party-invite');
+    partyInviteEl.addEventListener('click', function (e) {
+      var inviter = e.target.closest('div').id.replace('invite-from-', '');
+      if (e.target.matches('.accept-invite')) lobbySocket.emit('acceptInvite', inviter);
+    });
+  }
+
+  function initFriendRemoveListener() {
+    myFriendList.addEventListener('click', function (e) {
+      if (e.target.matches('.remove-friend')) removeFriend(e.target.dataset.friend);
+      if (e.target.matches('.invite')) inviteFriend(e.target.dataset.friend);
+    });
+  }
+
+  function inviteFriend(friendToInvite) {
+    console.log(friendToInvite);
+    lobbySocket.emit('inviteFriend', friendToInvite);
+  }
+
+  function removeFriend(friendToRemove) {
+    var currentUserID = getCurrentUserValue('id');
+    if (!currentUserID) return;
+    fetch('/api/remove-friend', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        currentUserID: currentUserID,
+        friendToRemove: friendToRemove
+      })
+    }).then(function (response) {
+      return response.json();
+    }).then(function (data) {
+      console.log('/api/remove-friend: \n', data);
+      fetchFriends();
+    });
+  }
 }
 
 function fetchFriends() {
@@ -246,7 +271,7 @@ function fetchFriends() {
   }).then(function (data) {
     console.log('/api/fetch-friends: \n', data);
     var myFriendListHTML = data.map(function (friend) {
-      return "<li class=\"friend\">\n        <span>".concat(friend, "</span>\n        <button class=\"remove-friend\" data-friend=\"").concat(friend, "\">Remove Friend</button>\n      </li>");
+      return "<li class=\"friend\">\n        <span>".concat(friend, "</span>\n        <button class=\"invite\" data-friend=\"").concat(friend, "\">Invite To Party</button>\n        <button class=\"remove-friend\" data-friend=\"").concat(friend, "\">Remove Friend</button>\n      </li>");
     }).join('');
     myFriendList.innerHTML = myFriendListHTML;
   });
@@ -312,12 +337,18 @@ function addFriend(friendToAdd) {
 function updatePeople(lobbyPeople) {
   playerCount.textContent = Object.values(lobbyPeople).length;
   playerList.innerHTML = Object.values(lobbyPeople).map(function (player) {
-    return "<li>\n      <span class=\"player\">".concat(player.username, "</span>\n      <button class=\"invite\">Invite</button>\n    </li>");
+    return "<li>\n      <span class=\"player\">".concat(player.username, "</span>\n    </li>");
   }).join('');
 }
 
 function getCurrentUserValue(value) {
   return JSON.parse(localStorage.getItem('user') || '{}')[value];
+}
+
+function displayInvite(inviter) {
+  var partyInviteEl = document.querySelector('#party-invite'); // TODO: Add deduplication of invite - or flash existing one
+
+  partyInviteEl.innerHTML += "<div id=\"invite-from-".concat(inviter, "\">\n      <span class=\"invitation\"> ").concat(inviter, " would like to invite you to their party</span>\n      <button class=\"accept-invite\">Accept</button>\n      <button>Decline</button>\n    </div>\n  ");
 }
 },{"../utils/utils.js":"utils/utils.js"}],"../../../Users/Bill/AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -347,7 +378,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58079" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50161" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

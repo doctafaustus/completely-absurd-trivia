@@ -7,6 +7,8 @@ To run app:
   // client directory
   npm start
 ```
+The app should run on `http://localhost:8080`
+
 
 ### TODO:
   - Add home page

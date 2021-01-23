@@ -7,6 +7,8 @@
   <include src="nav.html"></include>
 
   <h1>Game Lobby</h1>
+  <h2>My Email: <span id="my-email"></span></h2>
+  <h2>My Name: <span id="my-name"></span></h2>
 
   <section class="find-friends">
     <h3>Add Friends</h3>
@@ -22,6 +24,13 @@
   <h3>Player Count: <span id="player-count"></span></h3>
   <h3>Players</h3>
   <ol id="player-list"></ol>
+
+  <br>
+  <br>
+  <div id="party-invite"></div>
+
+  <h3>Party</h3>
+  <ul id="party-members"></ul>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
   <script src="./scripts/lobby.js"></script>

@@ -127,6 +127,7 @@ server.listen(process.env.PORT || 8080, () => {
 
 
 const lobbyPeople = {};
+const parties = {};
 const lobbyIO = io.of('/lobby');
 lobbyIO.on('connection', onConnect);
 
@@ -143,9 +144,7 @@ function onConnect(socket) {
     if (!lobbyPeople[username]) {
       lobbyPeople[username] = {
         username,
-        sockets: { [socket.id]: true },
-        party: [],
-        isPartyLeader() { return this.party.length }
+        sockets: { [socket.id]: true }
       };
     } else {
       lobbyPeople[username].sockets[socket.id] = true;
@@ -165,8 +164,49 @@ function onConnect(socket) {
     if (!Object.keys(player.sockets).length) {
       delete lobbyPeople[socket.username];
     }
-
+    console.log(lobbyPeople)
     updatePeople();
+  });
+
+  // Invite friend
+  socket.on('inviteFriend', friendToInvite => {
+    console.log(`${socket.username} wants to invite ${friendToInvite}`);
+
+
+    const recipientSockets = lobbyPeople[friendToInvite].sockets;
+    Object.keys(recipientSockets).forEach(socketID => {
+      lobbyIO.to(socketID).emit('inviteReceived', socket.username);
+    });
+  });
+
+  // Accept invite
+  socket.on('acceptInvite', inviter => {
+    console.log(`${socket.username} accepted invite from ${inviter}`);
+    lobbyPeople[inviter].partyLeader = true;
+
+    const isNewParty = !parties[inviter];
+    if (isNewParty) {
+      parties[inviter] = [ lobbyPeople[inviter], lobbyPeople[socket.username] ];
+    } else {
+      const inPartyAlready = parties[inviter].find(member => member.username === socket.username);
+      if (inPartyAlready) return console.log('inPartyAlready!');
+       
+      parties[inviter].push(lobbyPeople[socket.username]);
+    }
+
+    const partyNames = parties[inviter].map(member => member.username); 
+
+    parties[inviter].forEach(member => {
+      const memberSockets = lobbyPeople[member.username].sockets;
+      Object.keys(memberSockets).forEach(socketID => {
+        lobbyIO.to(socketID).emit('partyUpdated', partyNames);
+      });
+    });
+
+    // TODO: 
+    // Clear extra invites
+    // Condition for full party
+    // Prevent non-party leaders from inviting
   });
 }
 
