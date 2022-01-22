@@ -1,5 +1,39 @@
 import utils from '../utils/utils.js';
 
+document.addEventListener('click', ({ target }) => {
+  
+  // Invite friend
+  if (target.matches('.invite-friend')) {
+    console.log('Invite friend')
+  }
+
+  // Remove friend
+  if (target.matches('.remove-friend')) {
+    console.log('Remove friend');
+  }
+});
+
+
+// Add friend form
+const addFriendForm = document.querySelector('.add-friend-form');
+const addFriendInput = addFriendForm.querySelector('.add-friend-input');
+const addFriendStatus = addFriendForm.querySelector('.add-friend-status');
+addFriendForm.addEventListener('submit', e => {
+  e.preventDefault();
+  addFriendInput.value = '';
+  console.log('Submit add friend form');
+  addFriendStatus.textContent = 'Friend added!';
+
+  setTimeout(() => { addFriendStatus.textContent = ''}, 3000);
+});
+
+
+
+
+
+
+
+
 const playerCount = document.querySelector('#player-count');
 const playerList = document.querySelector('#player-list'); 
 const myFriendList = document.querySelector('.my-friend-list');
@@ -191,5 +225,6 @@ function displayInvite(inviter) {
     </div>
   `;
 }
+
 
 

@@ -180,6 +180,32 @@ var _utils = _interopRequireDefault(require("../utils/utils.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+document.addEventListener('click', function (_ref) {
+  var target = _ref.target;
+
+  // Invite friend
+  if (target.matches('.invite-friend')) {
+    console.log('Invite friend');
+  } // Remove friend
+
+
+  if (target.matches('.remove-friend')) {
+    console.log('Remove friend');
+  }
+}); // Add friend form
+
+var addFriendForm = document.querySelector('.add-friend-form');
+var addFriendInput = addFriendForm.querySelector('.add-friend-input');
+var addFriendStatus = addFriendForm.querySelector('.add-friend-status');
+addFriendForm.addEventListener('submit', function (e) {
+  e.preventDefault();
+  addFriendInput.value = '';
+  console.log('Submit add friend form');
+  addFriendStatus.textContent = 'Friend added!';
+  setTimeout(function () {
+    addFriendStatus.textContent = '';
+  }, 3000);
+});
 var playerCount = document.querySelector('#player-count');
 var playerList = document.querySelector('#player-list');
 var myFriendList = document.querySelector('.my-friend-list');
@@ -378,7 +404,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50161" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59770" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -2,11 +2,130 @@
 <head>
   <include src="head.html"></include>
   <title>Completely Absurd Trivia | Lobby</title>
+  <link rel="stylesheet" href="./styles/lobby.scss">
 </head>
 <body>
   <include src="nav.html"></include>
 
-  <h1>Game Lobby</h1>
+  <header>
+    <h1>Game Lobby</h1>
+    <h1 class="username">Player0001</h1>
+  </header>
+
+  <div class="players-in-lobby"><span class="players-num">0</span> players in lobby</div>
+
+  <section class="game-container">
+    <div class="game-listing">Game 1/21/22</div>
+  </section>
+
+
+  <section class="play-options">
+    <input type="radio" id="play-solo" class="play-option" name="play_option" value="play-solo" checked>
+    <label for="play-solo">Play Solo</label><br>
+    <input type="radio" id="play-with-friends" class="play-option" name="play_option" value="play-with-friends">
+    <label for="play-with-friends">Play with Friends</label><br>
+  </section>
+
+
+  <section class="my-party-section">
+    <h2 class="my-party-title">My Party <span class="party-member-count">2</span>/4</h2>
+    <ul class="my-party-list">
+      <li>
+        <img class="remove-from-party" title="Remove from party" src="./images/icon-remove.png">
+        <span class="friend-name">Self</span>
+        <img class="party-leader" src="./images/icon-crown.png">
+      </li>
+      <li>
+        <img class="remove-from-party" title="Remove from party" src="./images/icon-remove.png">
+        <span class="friend-name">Johnson</span>
+      </li>
+    </ul>
+  </section>
+
+
+  <section class="friend-section">
+    <h2 class="my-friends-title">My Friends</h2>
+
+    <form class="add-friend-form">
+      <div class="add-friend-form-inner">
+        <input type="text" class="add-friend-input">
+        <button class="lobby-btn" type="submit">Add Friend</button>
+      </div>
+      <div class="add-friend-status"></div>
+    </form>
+
+    <ul class="friend-list">
+      <li class="friend-listing" data-status="online">
+        <details class="friend-menu">
+          <summary class="friend-name">
+            <img class="friend-avatar" src="./images/avatar-example.jpg">
+            Steveman
+          </summary>
+          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
+          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+        </details>
+      </li>
+      <li class="friend-listing" data-status="online">
+        <details class="friend-menu">
+          <summary class="friend-name">
+            <img class="friend-avatar" src="./images/avatar-example.jpg">
+            Spud
+          </summary>
+          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
+          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+        </details>
+      </li>
+      <li class="friend-listing" data-status="invited">
+        <details class="friend-menu">
+          <summary class="friend-name">
+            <img class="friend-avatar" src="./images/avatar-example.jpg">
+            Billy
+          </summary>
+          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
+          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+        </details>
+      </li>
+      <li class="friend-listing" data-status="in-group" >
+        <details class="friend-menu">
+          <summary class="friend-name">
+            <img class="friend-avatar" src="./images/avatar-example.jpg">
+            Anderson
+          </summary>
+          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
+          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+        </details>
+      </li>
+      <li class="friend-listing" data-status="offline">
+        <details class="friend-menu">
+          <summary class="friend-name">
+            <img class="friend-avatar" src="./images/avatar-example.jpg">
+            Loser
+          </summary>
+          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
+          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+        </details>
+      </li>
+    </ul>
+  </section>
+
+
+
+
+
+  <div class="toast invite-request">
+    <div class="invite-message">
+      {{ Username }} would like to invite you to their party! 🥳
+    </div>
+    <div class="invite-actions">
+      <button class="invite-action" data-invite-action="accept">Accept</button>
+      <button class="invite-action" data-invite-action="decline">Decline</button>
+    </div>
+  </div>
+
+
+
+
+
   <h2>My Email: <span id="my-email"></span></h2>
   <h2>My Name: <span id="my-name"></span></h2>
 

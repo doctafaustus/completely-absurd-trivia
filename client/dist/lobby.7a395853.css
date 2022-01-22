@@ -1,0 +1,124 @@
+header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.lobby-btn {
+  outline: none;
+  background: none;
+  border: solid 2px #000;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.players-in-lobby {
+  font-style: italic;
+  color: #707070;
+  margin-bottom: 20px;
+}
+
+.game-container {
+  margin-bottom: 40px;
+}
+.game-container .game-listing {
+  border: solid 1px #000;
+  padding: 20px;
+}
+
+.play-options {
+  border-top: solid 3px #00b585;
+  padding-top: 20px;
+  display: flex;
+  justify-content: space-evenly;
+  margin-bottom: 20px;
+}
+.play-options .play-option {
+  outline: none;
+  background: none;
+  border: none;
+}
+.play-options label {
+  cursor: pointer;
+  user-select: none;
+}
+
+.my-party-section {
+  margin-bottom: 40px;
+}
+.my-party-section .my-party-title {
+  margin-bottom: 10px;
+}
+.my-party-section li {
+  display: flex;
+  align-items: center;
+}
+.my-party-section li .remove-from-party {
+  width: 14px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.my-party-section li .party-leader {
+  margin-left: 8px;
+  width: 18px;
+}
+
+.friend-section {
+  margin-bottom: 40px;
+}
+.friend-section .my-friends-title {
+  margin-bottom: 10px;
+}
+.friend-section .add-friend-form .add-friend-form-inner {
+  display: flex;
+}
+.friend-section .add-friend-form .add-friend-form-inner .add-friend-input {
+  height: 26px;
+  margin-right: 6px;
+  width: 150px;
+}
+.friend-section .add-friend-form .add-friend-status {
+  font-size: 14px;
+  color: #707070;
+}
+.friend-section .add-friend-form .add-friend-status:not(:empty) {
+  margin-top: 4px;
+}
+.friend-section .friend-list {
+  margin-left: 12px;
+}
+.friend-section .friend-list .friend-listing {
+  display: flex;
+  align-items: center;
+}
+.friend-section .friend-list .friend-listing .friend-menu {
+  padding: 5px;
+}
+.friend-section .friend-list .friend-listing .friend-menu .friend-name {
+  cursor: pointer;
+}
+.friend-section .friend-list .friend-listing .friend-menu[open] {
+  margin-bottom: 8px;
+}
+.friend-section .friend-list .friend-listing .friend-menu[open] .friend-name {
+  margin-bottom: 8px;
+}
+.friend-section .friend-list .friend-listing .friend-menu .friend-avatar {
+  width: 15px;
+  margin-left: 10px;
+  margin-right: 6px;
+}
+
+.toast {
+  border: solid 1px #000;
+  background: #fff;
+  padding: 20px;
+  position: fixed;
+  bottom: 20px;
+  z-index: 10;
+}
+
+.invite-request .invite-message {
+  margin-bottom: 8px;
+}
+
+/*# sourceMappingURL=/lobby.7a395853.css.map */
