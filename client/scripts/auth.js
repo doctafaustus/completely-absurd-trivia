@@ -42,7 +42,7 @@ function logIn() {
 }
 
 function addIfNew(user) {
-  fetch('/api/add-if-new', {
+  fetch('http://localhost:8080/api/add-if-new', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ authUser: user })

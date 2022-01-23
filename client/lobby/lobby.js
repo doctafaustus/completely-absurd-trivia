@@ -50,7 +50,7 @@ if (localStorage.getItem('user')) {
 }
 
 function initLobby() {
-  const lobbySocket = io('/lobby');
+  const lobbySocket = io('http://localhost:8080/lobby');
   const user = JSON.parse(localStorage.getItem('user'));
 
   document.querySelector('#my-email').textContent = user.email;
@@ -104,7 +104,7 @@ function initLobby() {
     const currentUserID = getCurrentUserValue('id');
     if (!currentUserID) return;
      
-    fetch('/api/remove-friend', {
+    fetch('http://localhost:8080/api/remove-friend', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ currentUserID, friendToRemove })
@@ -120,7 +120,7 @@ function initLobby() {
 function fetchFriends() {
   const currentUserID = getCurrentUserValue('id');
 
-  fetch('/api/fetch-friends', {
+  fetch('http://localhost:8080/api/fetch-friends', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ currentUserID })

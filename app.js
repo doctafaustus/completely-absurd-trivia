@@ -3,6 +3,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
+const cors = require('cors');
 const admin = require('firebase-admin');
 
 // Cloudstore config
@@ -13,6 +14,14 @@ else serviceAccount = JSON.parse(serviceAccount);
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const db = admin.firestore();
 
+// Allow CORS requests locally
+if (!process.env.PORT) {
+  app.use(cors({
+    origin: ['http://localhost:8080', 'http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    credentials: true 
+  }));
+}
 
 app.use(express.static(`${__dirname}/client/dist`));
 app.use(bodyParser.json({ limit: '1mb' }));
