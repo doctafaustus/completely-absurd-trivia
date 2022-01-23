@@ -1,11 +1,18 @@
 <html>
 <head>
-  <include src="head.html"></include>
+  <meta name=viewport content="width=device-width,initial-scale=1">
+  <link rel="stylesheet" href="./shared/reset.css">
+  <link rel="stylesheet" href="./shared/global.scss">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
   <title>Completely Absurd Trivia | Home</title>
 </head>
 <body>
-  <include src="nav.html"></include>
-  
+  <nav>
+    <a href="/">Home</a>
+    <a href="/lobby/">Lobby</a>
+    <a href="/game/">Game</a>
+  </nav>
+
   <button id="log-in">Log In</button>
   <button id="log-out">Sign Out</button>
   <h1>Welcome</h1>
@@ -13,6 +20,6 @@
   <!-- Core Firebase JS SDK and additional SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-auth.js"></script>
-  <script src="./scripts/auth.js"></script>
+  <script type="module" src="./scripts/auth.js"></script>
 </body>
 </html>

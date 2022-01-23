@@ -1,5 +1,3 @@
-import utils from '../utils/utils.js';
-
 // Initialize firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCPNbwrNgjrpf491e3WJwWQwnNqPJ0R7XE",

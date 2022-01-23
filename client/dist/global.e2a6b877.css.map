@@ -1,1 +1,0 @@
-{"version":3,"sources":["styles\\global.scss"],"names":[],"mappings":"AAAA;EACC;EACA;;;AAGD;EACC","file":"global.e2a6b877.css","sourceRoot":"..","sourcesContent":["body {\r\n\tfont-family: 'Inter', sans-serif;\r\n\tpadding: 20px;\r\n}\r\n\r\nnav {\r\n\tmargin-bottom: 3rem;\r\n}"]}
