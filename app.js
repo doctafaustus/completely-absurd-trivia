@@ -63,40 +63,38 @@ app.post('/api/add-if-new', async (req, res) => {
   }
 });
 
-app.post('/api/find-friend', async (req, res) => {
-  console.log('/api/find-friend');
-
-  const { searchTerm } = req.body;
-  const usersCollection = db.collection('users');
-
-  // Find all users whose searchTerm starts with search term
-  const query = await usersCollection.where('username', '>=', searchTerm).where('username', '<=', searchTerm+ '\uf8ff');
-
-  query.get().then(querySnapshot => {
-    const result = querySnapshot.docs.map(doc => doc.data().username);
-    res.json(result);
-  })
-  .catch(error => {
-    console.log(`Error getting documents: ${error}`);
-    res.json([]);
-  });
-});
 
 app.post('/api/add-friend', async (req, res) => {
   console.log('/api/add-friend');
 
-  const { currentUserID, friendToAdd } = req.body;
+  const { currentUserID, currentUserName, friendToAdd } = req.body;
   const usersCollection = db.collection('users');
 
   const docRef = usersCollection.doc(currentUserID);
   const doc = await docRef.get();
 
+  if (currentUserName === friendToAdd) return res.json({ result: 'You can\'t add yourself as a freind!' });
   if (!doc.exists) return res.json({ result: 'Current user not found' });
-  await docRef.update({
-    friends: admin.firestore.FieldValue.arrayUnion(friendToAdd)
-  });
 
-  res.json({ result: `Friend added: ${friendToAdd}` });
+  // Check if friendToAdd exists
+  const query = await usersCollection.where('username', '=', friendToAdd)
+  query.get().then(async (querySnapshot) => {
+    const result = querySnapshot.docs.map(doc => doc.data().username);
+    
+    const [firstResult] = result;
+    if (firstResult) {
+      await docRef.update({
+        friends: admin.firestore.FieldValue.arrayUnion(friendToAdd)
+      });
+      res.json({ result: `Friend added: ${friendToAdd}` });
+    } else {
+      res.json({ result: 'Player not found' });
+    }
+  })
+  .catch(error => {
+    console.log(`Error getting documents: ${error}`);
+    res.json([]);
+  });
 });
 
 app.post('/api/remove-friend', async (req, res) => {
