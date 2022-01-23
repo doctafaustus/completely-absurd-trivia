@@ -29,7 +29,7 @@ addFriendForm.addEventListener('submit', e => {
 });
 
 
-
+const friendList = document.querySelector('.friend-list');
 
 
 
@@ -128,15 +128,21 @@ function fetchFriends() {
   .then(response =>response.json())
   .then(data => {
     console.log('/api/fetch-friends: \n', data);
-    const myFriendListHTML = data.map(friend => {
-      return `<li class="friend">
-        <span>${friend}</span>
-        <button class="invite" data-friend="${friend}">Invite To Party</button>
-        <button class="remove-friend" data-friend="${friend}">Remove Friend</button>
-      </li>`;
+
+    const friendListHTML = data.map(friend => {
+      return `<li class="friend-listing" data-status="online">
+        <details class="friend-menu">
+          <summary class="friend-name">
+            <img class="friend-avatar" src="../images/avatar-example.jpg">
+            ${friend}
+          </summary>
+          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
+          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+        </details>
+      </li>`
     }).join(''); 
 
-    myFriendList.innerHTML = myFriendListHTML;
+    friendList.innerHTML = friendListHTML;
   });
 }
 
