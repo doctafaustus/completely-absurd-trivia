@@ -1,22 +1,6 @@
-import addFriendSection from '@/lobby/add-friend-section.js';
+import myFriendsSection from '@/lobby/my-friends-section.js';
 import { getCurrentUserValue } from '@/utils/user-utils.js';
 import fetchFriends from '@/lobby/fetch-friends.js';
-
-addFriendSection();
-
-document.addEventListener('click', ({ target }) => {
-  
-  // Invite friend
-  if (target.matches('.invite-friend')) {
-    console.log('Invite friend')
-  }
-
-  // Remove friend
-  if (target.matches('.remove-friend')) {
-    console.log('Remove friend');
-  }
-});
-
 
 
 const playerCount = document.querySelector('#player-count');
@@ -39,6 +23,9 @@ function initLobby() {
   const lobbySocket = io('http://localhost:8080/lobby');
   const user = JSON.parse(localStorage.getItem('user'));
 
+
+  myFriendsSection(lobbySocket);
+
   // Populate user data
   document.querySelector('.username').textContent = user.username;
 
@@ -56,6 +43,16 @@ function initLobby() {
   initFriendRemoveListener();
   initInviteListener();
   fetchFriends();
+
+  // Decline party invitation
+  document.addEventListener('click', ({ target }) => {
+    if (target.matches('.decline-invite')) {
+      const invite = target.closest('.invite-request');
+      invite.remove();
+    }
+  });
+
+
 
   function displayParty(partyList) {
     document.querySelector('#party-members').innerHTML = partyList.map(member => {
@@ -88,25 +85,8 @@ function initLobby() {
     console.log(friendToInvite);
     lobbySocket.emit('inviteFriend', friendToInvite);
   }
-  
-  function removeFriend(friendToRemove) {
-    const currentUserID = getCurrentUserValue('id');
-    if (!currentUserID) return;
-     
-    fetch('http://localhost:8080/api/remove-friend', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ currentUserID, friendToRemove })
-    })
-    .then(response => response.json())
-    .then(data => {
-      console.log('/api/remove-friend: \n', data);
-      fetchFriends();
-    });
-  }
+
 }
-
-
 
 
 function updatePeople(lobbyPeople) {
@@ -119,15 +99,22 @@ function updatePeople(lobbyPeople) {
 }
 
 function displayInvite(inviter) {
-  const partyInviteEl = document.querySelector('#party-invite');
-  // TODO: Add deduplication of invite - or flash existing one
+  console.log('displayInvite', inviter);
 
-  partyInviteEl.innerHTML += `<div id="invite-from-${inviter}">
-      <span class="invitation"> ${inviter} would like to invite you to their party</span>
-      <button class="accept-invite">Accept</button>
-      <button>Decline</button>
+  const inviteToast = `
+    <div class="toast invite-request">
+      <div class="invite-message">
+        ${inviter} would like to invite you to their party! 🥳
+      </div>
+      <div class="invite-actions">
+        <button class="invite-action accept-invite">Accept</button>
+        <button class="invite-action decline-invite">Decline</button>
+      </div>
     </div>
   `;
+
+  const toastsContainer = document.querySelector('.toasts-container');
+  toastsContainer.insertAdjacentHTML('afterbegin', inviteToast);
 }
 
 

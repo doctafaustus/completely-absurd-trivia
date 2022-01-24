@@ -13,13 +13,17 @@ export default function fetchFriends() {
   .then(data => {
     const friendListHTML = data.map(friend => {
       return `<li class="friend-listing" data-status="online">
-        <details class="friend-menu">
+        <details class="friend-menu" data-friend-username="${friend}">
           <summary class="friend-name">
             <img class="friend-avatar" src="../images/avatar-example.jpg">
             ${friend}
           </summary>
-          <button class="lobby-btn invite-friend" data-action="invite">Invite</button>
-          <button class="lobby-btn remove-friend" data-action="remove">Remove</button>
+          <button class="lobby-btn invite-friend">
+              Invite
+          </button>
+          <button class="lobby-btn remove-friend">
+              Remove
+            </button>
         </details>
       </li>`
     }).join(''); 

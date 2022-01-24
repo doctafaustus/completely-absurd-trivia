@@ -179,6 +179,9 @@ function onConnect(socket) {
   socket.on('inviteFriend', friendToInvite => {
     console.log(`${socket.username} wants to invite ${friendToInvite}`);
 
+    const playerObj = lobbyPeople[friendToInvite];
+    // TODO: Add handling for player not online
+    if (!playerObj) return console.log('Player not online');
 
     const recipientSockets = lobbyPeople[friendToInvite].sockets;
     Object.keys(recipientSockets).forEach(socketID => {

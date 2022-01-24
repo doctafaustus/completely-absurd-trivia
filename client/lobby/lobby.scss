@@ -81,6 +81,8 @@ header {
   }
 
   .add-friend-form {
+    margin-bottom: 22px;
+
     .add-friend-form-inner {
       display: flex;
 
@@ -92,12 +94,10 @@ header {
     }
 
     .add-friend-status {
+      position: absolute;
+      z-index: 1;
       font-size: 14px;
       color: $gray;
-
-      &:not(:empty) {
-        margin-top: 4px;
-      }
     }
   }
 

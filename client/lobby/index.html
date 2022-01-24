@@ -1,5 +1,6 @@
 <html>
 <head>
+  <meta charset="UTF-8">
   <meta name=viewport content="width=device-width,initial-scale=1">
   <link rel="stylesheet" href="../shared/reset.css">
   <link rel="stylesheet" href="../shared/global.scss">
@@ -58,7 +59,7 @@
 
     <form class="add-friend-form">
       <div class="add-friend-form-inner">
-        <input type="text" class="add-friend-input">
+        <input type="text" class="add-friend-input" placeholder="Username">
         <button class="lobby-btn" type="submit">Add Friend</button>
       </div>
       <div class="add-friend-status"></div>
@@ -68,21 +69,7 @@
   </section>
 
 
-
-
-
-  <div class="toast invite-request">
-    <div class="invite-message">
-      {{ Username }} would like to invite you to their party! 🥳
-    </div>
-    <div class="invite-actions">
-      <button class="invite-action" data-invite-action="accept">Accept</button>
-      <button class="invite-action" data-invite-action="decline">Decline</button>
-    </div>
-  </div>
-
-
-
+  <div class="toasts-container"></div>
 
 
   <h2>My Email: <span id="my-email"></span></h2>
