@@ -1,5 +1,8 @@
+import handlebars from 'vite-plugin-handlebars';
 const { resolve } = require('path');
 const { defineConfig } = require('vite');
+
+
 
 module.exports = defineConfig({
   resolve: {
@@ -15,5 +18,10 @@ module.exports = defineConfig({
         game: resolve(__dirname, 'game/index.html')
       },
     }
-  }
-})
+  },
+  plugins: [
+    handlebars({
+      partialDirectory: resolve(__dirname, 'partials')
+    }),
+  ]
+});

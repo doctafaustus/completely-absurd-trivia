@@ -1,18 +1,10 @@
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name=viewport content="width=device-width,initial-scale=1">
-  <link rel="stylesheet" href="./shared/reset.css">
-  <link rel="stylesheet" href="./shared/global.scss">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
+  {{> head }}
   <title>Completely Absurd Trivia | Home</title>
 </head>
 <body>
-  <nav>
-    <a href="/">Home</a>
-    <a href="/lobby/">Lobby</a>
-    <a href="/game/">Game</a>
-  </nav>
+  {{> nav }}
 
   <button id="log-in">Log In</button>
   <button id="log-out">Sign Out</button>
