@@ -11,12 +11,12 @@ export default function fetchFriends() {
   })
   .then(response =>response.json())
   .then(data => {
-    const friendListHTML = data.map(friend => {
+    const friendListHTML = data.map(({ username }) => {
       return `<li class="friend-listing" data-status="online">
-        <details class="friend-menu" data-friend-username="${friend}">
+        <details class="friend-menu" data-friend-username="${username}">
           <summary class="friend-name">
             <img class="friend-avatar" src="../images/avatar-example.jpg">
-            ${friend}
+            ${username}
           </summary>
           <button class="lobby-btn invite-friend">
               Invite

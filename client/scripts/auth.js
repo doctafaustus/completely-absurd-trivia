@@ -12,6 +12,9 @@ const firebaseConfig = {
 
 firebase.initializeApp(firebaseConfig);
 const googleProvider = new firebase.auth.GoogleAuthProvider();
+googleProvider.setCustomParameters({
+  prompt: 'select_account'
+});
 
 // Log In
 document.querySelector('#log-in').addEventListener('click', logIn);

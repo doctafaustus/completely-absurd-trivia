@@ -96,12 +96,12 @@ app.post('/api/add-friend', async (req, res) => {
         return res.json({ result: 'Invalid friend code' });
       }
       await docRef.update({
-        friends: admin.firestore.FieldValue.arrayUnion(friendToAdd)
+        friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${friendDocID}`))
       });
 
       const friendDocRef = usersCollection.doc(friendDocID);
       await friendDocRef.update({
-        friends: admin.firestore.FieldValue.arrayUnion(currentUserName)
+        friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${currentUserID}`))
       });
 
       res.json({ result: `Friend added: ${friendToAdd}` });
@@ -140,8 +140,19 @@ app.post('/api/fetch-friends', async (req, res) => {
 
   const docRef = usersCollection.doc(currentUserID);
   const doc = await docRef.get();
+
+  const friendRefs = doc.data().friends;
+  const friendDataPromises = friendRefs.map(async (friendRef) => {
+    const friendDoc = await friendRef.get();
+    return {
+      id: friendDoc.id,
+      username: friendDoc.data().username
+    };
+  });
+  const results = await Promise.all(friendDataPromises);
+
   if (!doc.exists) res.json([]);
-  res.json(doc.data().friends);
+  res.json(results);
 });
 
 
