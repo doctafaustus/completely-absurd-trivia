@@ -1,6 +1,6 @@
 @import '@/shared/variables';
 
-header {
+header > div {
   display: flex;
   justify-content: space-between;
 }
@@ -86,10 +86,17 @@ header {
     .add-friend-form-inner {
       display: flex;
 
-      .add-friend-input {
-        height: 26px;
+      input {
         margin-right: 6px;
+        height: 26px;
+      }
+
+      .add-friend-input {
         width: 150px;
+      }
+
+      .friend-code-input {
+        width: 70px;
       }
     }
 

@@ -4,6 +4,7 @@ import fetchFriends from '@/lobby/fetch-friends.js';
 
 const addFriendForm = document.querySelector('.add-friend-form');
 const addFriendInput = addFriendForm.querySelector('.add-friend-input');
+const friendCodeInput = addFriendForm.querySelector('.friend-code-input');
 const addFriendStatus = addFriendForm.querySelector('.add-friend-status');
 
 
@@ -27,10 +28,18 @@ export default function addFriendSection(lobbySocket) {
   // Add friend form
   addFriendForm.addEventListener('submit', e => {
     e.preventDefault();
-    addFriendStatus.textContent = '';
 
     const friendToAdd = addFriendInput.value;
-    addFriend(friendToAdd);
+    const friendCode = friendCodeInput.value;
+
+    if (!friendToAdd) {
+      return addFriendStatus.textContent = 'Must enter friend name';
+    } else if (!friendCode) {
+      return addFriendStatus.textContent = 'Must enter friend code';
+    }
+
+    addFriendStatus.textContent = '';
+    addFriend(friendToAdd, friendCode);
   });
 
 
@@ -74,7 +83,7 @@ function inviteFriend(friendToInvite, lobbySocket) {
   lobbySocket.emit('inviteFriend', friendToInvite);
 }
 
-function addFriend(friendToAdd) {
+function addFriend(friendToAdd, friendCode) {
   const currentUserID = getCurrentUserValue('id');
   const currentUserName = getCurrentUserValue('username');
 
@@ -83,7 +92,12 @@ function addFriend(friendToAdd) {
   fetch('http://localhost:8080/api/add-friend', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ currentUserID, currentUserName, friendToAdd })
+    body: JSON.stringify({ 
+      currentUserID,
+      currentUserName,
+      friendToAdd,
+      friendCode
+    })
   })
   .then(response => response.json())
   .then(data => {
@@ -94,7 +108,7 @@ function addFriend(friendToAdd) {
 
     if (data.result.includes('Friend added:')) {
       fetchFriends();
-      addFriendInput.value = '';
+      [addFriendInput, friendCodeInput].forEach(input => input.value = '');
     }
   });
 }

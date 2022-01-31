@@ -56,7 +56,8 @@ app.post('/api/add-if-new', async (req, res) => {
       username: `newbie_${randomNum}${(+new Date).toString(36)}`,
       friends: [],
       created: new Date().getTime(),
-      lastLoggedIn: new Date().getTime()
+      lastLoggedIn: new Date().getTime(),
+      friendCode: (Math.random() * 100000).toFixed(0).padEnd(5, 0)
     });
     const updatedDoc = await docRef.get();
     res.json({ id: updatedDoc.id, ...updatedDoc.data() });
@@ -67,7 +68,7 @@ app.post('/api/add-if-new', async (req, res) => {
 app.post('/api/add-friend', async (req, res) => {
   console.log('/api/add-friend');
 
-  const { currentUserID, currentUserName, friendToAdd } = req.body;
+  const { currentUserID, currentUserName, friendToAdd, friendCode } = req.body;
   const usersCollection = db.collection('users');
 
   const docRef = usersCollection.doc(currentUserID);
@@ -79,13 +80,30 @@ app.post('/api/add-friend', async (req, res) => {
   // Check if friendToAdd exists
   const query = await usersCollection.where('username', '=', friendToAdd)
   query.get().then(async (querySnapshot) => {
-    const result = querySnapshot.docs.map(doc => doc.data().username);
+    let friendDocID;
+
+    const result = querySnapshot.docs.map(doc => {
+      const { username, friendCode } = doc.data();
+      friendDocID = doc.id;
+
+      return { username, friendCode};
+    });
     
     const [firstResult] = result;
+
     if (firstResult) {
+      if (friendCode !== firstResult.friendCode) {
+        return res.json({ result: 'Invalid friend code' });
+      }
       await docRef.update({
         friends: admin.firestore.FieldValue.arrayUnion(friendToAdd)
       });
+
+      const friendDocRef = usersCollection.doc(friendDocID);
+      await friendDocRef.update({
+        friends: admin.firestore.FieldValue.arrayUnion(currentUserName)
+      });
+
       res.json({ result: `Friend added: ${friendToAdd}` });
     } else {
       res.json({ result: 'Player not found' });

@@ -28,6 +28,7 @@ function initLobby() {
 
   // Populate user data
   document.querySelector('.username').textContent = user.username;
+  document.querySelector('.friend-code-val').textContent = user.friendCode;
 
   document.querySelector('#my-email').textContent = user.email;
   document.querySelector('#my-name').textContent = user.username;

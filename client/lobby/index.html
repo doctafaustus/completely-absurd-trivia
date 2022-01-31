@@ -9,8 +9,16 @@
   {{> nav }}
 
   <header>
-    <h1>Game Lobby</h1>
-    <h1 class="username"></h1>
+    <div>
+      <h1>Game Lobby</h1>
+      <h1 class="username"></h1>
+    </div>
+    <div>
+      <div></div>
+      <div class="friend-code">
+        Friend Code: <kbd class="friend-code-val"></kbd>
+      </div>
+    </div>
   </header>
 
   <div class="players-in-lobby"><span class="players-num">0</span> players in lobby</div>
@@ -52,6 +60,7 @@
     <form class="add-friend-form">
       <div class="add-friend-form-inner">
         <input type="text" class="add-friend-input" placeholder="Username">
+        <input type="text" class="friend-code-input" placeholder="Code">
         <button class="lobby-btn" type="submit">Add Friend</button>
       </div>
       <div class="add-friend-status"></div>
