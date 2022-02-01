@@ -11,10 +11,16 @@ const firebaseConfig = {
 };
 
 firebase.initializeApp(firebaseConfig);
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.NONE);
+
+
 const googleProvider = new firebase.auth.GoogleAuthProvider();
 googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
+
+fetch('http://localhost:8080/ready')
+  .then(() => console.log('dp'))
 
 // Log In
 document.querySelector('#log-in').addEventListener('click', logIn);
@@ -37,7 +43,21 @@ function logIn() {
   firebase.auth().signInWithPopup(googleProvider).then(result => {
     const user = result.user;
     console.log('user', user);
-    addIfNew(user);
+
+    user.getIdToken().then(idToken => {
+      console.log({ idToken });
+      fetch('http://localhost:8080/session-login', {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+          'CSRF-Token': Cookies.get('XSRF-TOKEN')
+        },
+        body: JSON.stringify({ idToken })
+      })
+    });
+
+    //addIfNew(user);
   }).catch(error => {
     const { code, message, email, credential } = error;
     console.log(`Error signing in: ${code} - ${message} - ${email} - ${credential}`);
@@ -54,7 +74,10 @@ function addIfNew(user) {
   .then(data => {
     console.log('/api/add-if-new response: \n', data);
     localStorage.setItem('user', JSON.stringify(data));
-  });
+  })
+  .then(() => {
+    console.log('done!!!');
+  })
 }
 
 function logOut() {

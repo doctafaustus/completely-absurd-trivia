@@ -5,6 +5,8 @@ const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
 const cors = require('cors');
 const admin = require('firebase-admin');
+const csurf = require('csurf');
+const cookieParser = require('cookie-parser');
 
 // Cloudstore config
 let serviceAccount = process.env.SERVICE_ACCOUNT_KEY;
@@ -23,8 +25,21 @@ if (!process.env.PORT) {
   }));
 }
 
+
+
 app.use(express.static(`${__dirname}/client/dist`));
 app.use(bodyParser.json({ limit: '1mb' }));
+app.use(cookieParser());
+app.use(csurf({ cookie: true }));
+
+
+app.get('/ready', (req, res) => {
+  console.log('hi');
+  res.setHeader('Access-Control-Allow-Credentials', true);
+  res.cookie('a', 'acc');
+  //res.cookie('XSRF-TOKEN', req.csrfToken());
+  res.end();
+});
 
 app.get('/', (req, res) => {
   res.sendFile(`${__dirname}/client/dist/index.html`);
