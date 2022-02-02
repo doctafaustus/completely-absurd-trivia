@@ -1,3 +1,5 @@
+import utils from '@/utils/utils.js';
+
 // Initialize firebase
 const firebaseConfig = {
   apiKey: "AIzaSyCPNbwrNgjrpf491e3WJwWQwnNqPJ0R7XE",
@@ -19,8 +21,6 @@ googleProvider.setCustomParameters({
   prompt: 'select_account'
 });
 
-fetch('http://localhost:8080/ready')
-  .then(() => console.log('dp'))
 
 // Log In
 document.querySelector('#log-in').addEventListener('click', logIn);
@@ -46,15 +46,24 @@ function logIn() {
 
     user.getIdToken().then(idToken => {
       console.log({ idToken });
-      fetch('http://localhost:8080/session-login', {
+      fetch('/session-login', {
         method: 'POST',
         headers: {
           Accept: 'application/json',
           'Content-Type': 'application/json',
-          'CSRF-Token': Cookies.get('XSRF-TOKEN')
+          'CSRF-Token': utils.getCookie('XSRF-TOKEN')
         },
         body: JSON.stringify({ idToken })
       })
+      .then(() => {
+        return firebase.auth().signOut();
+      })
+      .then(() => {
+        console.log('we are done');
+      })
+      .catch(err => {
+        console.error('ERROR:', err);
+      });
     });
 
     //addIfNew(user);

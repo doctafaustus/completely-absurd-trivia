@@ -1,20 +1,32 @@
 <html>
 <head>
+  <meta charset="UTF-8">
   <meta name=viewport content="width=device-width,initial-scale=1">
   
   
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap" rel="stylesheet">
-  <title>Completely Absurd Trivia | Home</title>
-  <script type="module" crossorigin src="/assets/main.7f07d644.js"></script>
+  
+  <script>
+    if (window.location.hostname === 'localhost') {
+      const script = document.createElement('script');
+      script.type = 'text/javascript';
+      script.src = 'http://localhost:35729/livereload.js?snipver=1';
+      document.head.insertAdjacentElement('beforeend', script);
+    }
+  </script>  <title>Completely Absurd Trivia | Home</title>
+  <script type="module" crossorigin src="/assets/main.7d3f9683.js"></script>
   <link rel="modulepreload" href="/assets/global.9ef38fe8.js">
   <link rel="stylesheet" href="/assets/global.f873fcfd.css">
 </head>
 <body>
-  <!-- <include src="nav.html"></include> -->
-  
+  <nav>
+    <a href="/">Home</a>
+    <a href="/lobby/">Lobby</a>
+    <a href="/game/">Game</a>
+  </nav>
   <button id="log-in">Log In</button>
   <button id="log-out">Sign Out</button>
-  <h1>Welcome</h1>
+  <h1>Welcome2</h1>
 
   <!-- Core Firebase JS SDK and additional SDKs -->
   <script src="https://www.gstatic.com/firebasejs/8.0.0/firebase-app.js"></script>

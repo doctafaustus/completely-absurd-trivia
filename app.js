@@ -7,6 +7,7 @@ const cors = require('cors');
 const admin = require('firebase-admin');
 const csurf = require('csurf');
 const cookieParser = require('cookie-parser');
+const serveStatic = require('serve-static');
 
 // Cloudstore config
 let serviceAccount = process.env.SERVICE_ACCOUNT_KEY;
@@ -16,41 +17,77 @@ else serviceAccount = JSON.parse(serviceAccount);
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const db = admin.firestore();
 
+
+
 // Allow CORS requests locally
-if (!process.env.PORT) {
-  app.use(cors({
-    origin: ['http://localhost:8080', 'http://localhost:3000'],
-    methods: ['GET', 'POST'],
-    credentials: true 
-  }));
-}
+// if (!process.env.PORT) {
+//   app.use(cors({
+//     origin: ['http://localhost:8080', 'http://localhost:3000'],
+//     methods: ['GET', 'POST'],
+//     credentials: true 
+//   }));
+// }
 
+// Check if the static directory was preventing cookies from getting set when using Vite
 
+app.use(serveStatic(__dirname + '/client/dist', {
+  index: false
+}));
+// app.use(express.static(`${__dirname}/client/dist`));
 
-app.use(express.static(`${__dirname}/client/dist`));
 app.use(bodyParser.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(csurf({ cookie: true }));
-
-
-app.get('/ready', (req, res) => {
-  console.log('hi');
-  res.setHeader('Access-Control-Allow-Credentials', true);
-  res.cookie('a', 'acc');
-  //res.cookie('XSRF-TOKEN', req.csrfToken());
-  res.end();
+app.all('*', (req, res, next) => {
+  res.cookie('XSRF-TOKEN', req.csrfToken());
+  next();
 });
 
+app.post('/session-login', (req, res) => {
+  const idToken = req.body.idToken.toString();
+  const expiresIn = 60 * 60 * 24 * 7 * 1000;
+
+  admin
+    .auth()
+    .createSessionCookie(idToken, { expiresIn })
+    .then(
+      (sessionCookie) => {
+        const options = { maxAge: expiresIn, httpOnly: true };
+        res.cookie('session', sessionCookie, options);
+        res.end(JSON.stringify({ status: 'success' }));
+      },
+      (error) => {
+        console.log('error!!!');
+        res.status(401).send('Unauthorized request');
+      }
+    );
+});
+
+
 app.get('/', (req, res) => {
+  console.log('---/');
   res.sendFile(`${__dirname}/client/dist/index.html`);
 });
 
 app.get('/lobby', (req, res) => {
-  res.sendFile(`${__dirname}/client/dist/lobby.html`);
+  console.log('---/lobby');
+  const sessionCookie = req.cookies.session || '';
+
+  admin
+    .auth()
+    .verifySessionCookie(sessionCookie, true)
+    .then(() => {
+      console.log('everything fine');
+      res.sendFile(`${__dirname}/client/dist/lobby/index.html`);
+    })
+    .catch((error) => {
+      console.log('nope');
+      res.redirect('/not signed in!');
+    });
 });
 
 app.get('/game', (req, res) => {
-  res.sendFile(`${__dirname}/client/dist/game.html`);
+  res.sendFile(`${__dirname}/client/dist/game/index.html`);
 });
 
 app.post('/api/add-if-new', async (req, res) => {
