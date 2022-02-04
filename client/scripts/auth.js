@@ -25,48 +25,29 @@ googleProvider.setCustomParameters({
 // Log In
 document.querySelector('#log-in').addEventListener('click', logIn);
 
-// Log Out
-document.querySelector('#log-out').addEventListener('click', logOut);
-
-// Control loggedIn localStorage when user signs in/out
-firebase.auth().onAuthStateChanged(user => {
-  if (user) {
-    console.log('logged in', user);
-  } else {
-    console.log('not logged in');
-    localStorage.removeItem('user');
-  }
-});
-
-
 function logIn() {
   firebase.auth().signInWithPopup(googleProvider).then(result => {
     const user = result.user;
-    console.log('user', user);
+    console.log('signed in:', user);
 
     user.getIdToken().then(idToken => {
-      console.log({ idToken });
       fetch('/session-login', {
         method: 'POST',
         headers: {
-          Accept: 'application/json',
           'Content-Type': 'application/json',
           'CSRF-Token': utils.getCookie('XSRF-TOKEN')
         },
         body: JSON.stringify({ idToken })
       })
       .then(() => {
-        return firebase.auth().signOut();
-      })
-      .then(() => {
-        console.log('we are done');
+        console.log('Login successful');
+        addIfNew(user);
+        firebase.auth().signOut();
       })
       .catch(err => {
         console.error('ERROR:', err);
       });
     });
-
-    //addIfNew(user);
   }).catch(error => {
     const { code, message, email, credential } = error;
     console.log(`Error signing in: ${code} - ${message} - ${email} - ${credential}`);
@@ -74,26 +55,17 @@ function logIn() {
 }
 
 function addIfNew(user) {
-  fetch('http://localhost:8080/api/add-if-new', {
+  fetch('/add-if-new', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'CSRF-Token': utils.getCookie('XSRF-TOKEN')
+    },
     body: JSON.stringify({ authUser: user })
   })
   .then(response => response.json())
   .then(data => {
-    console.log('/api/add-if-new response: \n', data);
+    console.log('/add-if-new response: \n', data);
     localStorage.setItem('user', JSON.stringify(data));
-  })
-  .then(() => {
-    console.log('done!!!');
-  })
-}
-
-function logOut() {
-  firebase.auth().signOut().then(
-    () => {
-      console.log('Signed Out');
-    },
-    error => console.error('Sign Out Error', error)
-  );
+  });
 }

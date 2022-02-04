@@ -3,7 +3,6 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io')(server);
 const bodyParser = require('body-parser');
-const cors = require('cors');
 const admin = require('firebase-admin');
 const csurf = require('csurf');
 const cookieParser = require('cookie-parser');
@@ -17,17 +16,6 @@ else serviceAccount = JSON.parse(serviceAccount);
 admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
 const db = admin.firestore();
 
-
-
-// Allow CORS requests locally
-// if (!process.env.PORT) {
-//   app.use(cors({
-//     origin: ['http://localhost:8080', 'http://localhost:3000'],
-//     methods: ['GET', 'POST'],
-//     credentials: true 
-//   }));
-// }
-
 // Check if the static directory was preventing cookies from getting set when using Vite
 
 app.use(serveStatic(__dirname + '/client/dist', {
@@ -39,60 +27,53 @@ app.use(bodyParser.json({ limit: '1mb' }));
 app.use(cookieParser());
 app.use(csurf({ cookie: true }));
 app.all('*', (req, res, next) => {
+  console.log('---', req.url);
   res.cookie('XSRF-TOKEN', req.csrfToken());
   next();
 });
 
-app.post('/session-login', (req, res) => {
+
+
+app.post('/session-login', async (req, res) => {
   const idToken = req.body.idToken.toString();
   const expiresIn = 60 * 60 * 24 * 7 * 1000;
 
-  admin
-    .auth()
-    .createSessionCookie(idToken, { expiresIn })
-    .then(
-      (sessionCookie) => {
-        const options = { maxAge: expiresIn, httpOnly: true };
-        res.cookie('session', sessionCookie, options);
-        res.end(JSON.stringify({ status: 'success' }));
-      },
-      (error) => {
-        console.log('error!!!');
-        res.status(401).send('Unauthorized request');
-      }
-    );
+  try {
+    const sessionCookie = await admin.auth().createSessionCookie(idToken, { expiresIn });
+    const options = { maxAge: expiresIn, httpOnly: true };
+    res.cookie('session', sessionCookie, options);
+    res.end(JSON.stringify({ status: 'success' }));
+  } catch(errorInfo) {
+    console.error(errorInfo.message);
+    res.status(401).send('Unauthorized request')
+  }
 });
 
 
 app.get('/', (req, res) => {
-  console.log('---/');
   res.sendFile(`${__dirname}/client/dist/index.html`);
 });
 
-app.get('/lobby', (req, res) => {
-  console.log('---/lobby');
-  const sessionCookie = req.cookies.session || '';
 
-  admin
-    .auth()
-    .verifySessionCookie(sessionCookie, true)
-    .then(() => {
-      console.log('everything fine');
-      res.sendFile(`${__dirname}/client/dist/lobby/index.html`);
-    })
-    .catch((error) => {
-      console.log('nope');
-      res.redirect('/not signed in!');
-    });
+async function isLoggedIn(req, res, next) {
+  try {
+    const sessionCookie = req.cookies.session || '';
+    await admin.auth().verifySessionCookie(sessionCookie, true);
+    next();
+  } catch(errorInfo) {
+    res.redirect('/not-logged-in');
+  }
+}
+
+app.get('/lobby', isLoggedIn, (req, res) => {
+  res.sendFile(`${__dirname}/client/dist/lobby/index.html`);
 });
 
 app.get('/game', (req, res) => {
   res.sendFile(`${__dirname}/client/dist/game/index.html`);
 });
 
-app.post('/api/add-if-new', async (req, res) => {
-  console.log('/api/add-if-new');
-
+app.post('/add-if-new', async (req, res) => {
   const { authUser } = req.body;
   const usersCollection = db.collection('users');
   const docRef = usersCollection.doc(authUser.uid);
@@ -207,6 +188,12 @@ app.post('/api/fetch-friends', async (req, res) => {
   res.json(results);
 });
 
+
+app.get('/log-out', (req, res) => {
+  console.log('--/logout');
+  res.clearCookie('session');
+  res.redirect('/');
+});
 
 
 server.listen(process.env.PORT || 8080, () => {
