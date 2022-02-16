@@ -18,9 +18,10 @@ const db = admin.firestore();
 
 // Check if the static directory was preventing cookies from getting set when using Vite
 
-app.use(serveStatic(__dirname + '/client/dist', {
+app.use(serveStatic(`${__dirname}/client/dist`, {
   index: false
 }));
+app.use(serveStatic(`${__dirname}/client/public`));
 // app.use(express.static(`${__dirname}/client/dist`));
 
 app.use(bodyParser.json({ limit: '1mb' }));
@@ -32,16 +33,16 @@ app.all('*', (req, res, next) => {
   next();
 });
 
-
+const expiresIn = 60 * 60 * 24 * 7 * 1000;
 
 app.post('/session-login', async (req, res) => {
   const idToken = req.body.idToken.toString();
-  const expiresIn = 60 * 60 * 24 * 7 * 1000;
 
   try {
     const sessionCookie = await admin.auth().createSessionCookie(idToken, { expiresIn });
     const options = { maxAge: expiresIn, httpOnly: true };
     res.cookie('session', sessionCookie, options);
+
     res.end(JSON.stringify({ status: 'success' }));
   } catch(errorInfo) {
     console.error(errorInfo.message);
@@ -79,6 +80,8 @@ app.post('/add-if-new', async (req, res) => {
   const docRef = usersCollection.doc(authUser.uid);
   
   const doc = await docRef.get();
+  res.cookie('userID', doc.id, { maxAge: expiresIn, httpOnly: true });
+
   if (doc.exists) {
     docRef.update({ lastLoggedIn: new Date().getTime() });
     res.json({ id: doc.id, ...doc.data() });
@@ -90,7 +93,7 @@ app.post('/add-if-new', async (req, res) => {
       friends: [],
       created: new Date().getTime(),
       lastLoggedIn: new Date().getTime(),
-      friendCode: (Math.random() * 100000).toFixed(0).padEnd(5, 0)
+      friendCode: (Math.random() * 10000).toFixed(0).padEnd(4, 0)
     });
     const updatedDoc = await docRef.get();
     res.json({ id: updatedDoc.id, ...updatedDoc.data() });
@@ -98,21 +101,21 @@ app.post('/add-if-new', async (req, res) => {
 });
 
 
-app.post('/api/add-friend', async (req, res) => {
-  console.log('/api/add-friend');
+app.post('/add-friend', isLoggedIn, async (req, res) => {
+  try {
+    const currentUserID = req.cookies.userID;
+    const { friendToAdd, friendCode } = req.body;
+    const usersCollection = db.collection('users');
 
-  const { currentUserID, currentUserName, friendToAdd, friendCode } = req.body;
-  const usersCollection = db.collection('users');
+    const docRef = usersCollection.doc(currentUserID);
+    const doc = await docRef.get();
 
-  const docRef = usersCollection.doc(currentUserID);
-  const doc = await docRef.get();
+    if (!doc.exists) return res.json({ result: 'Current user not found' });
 
-  if (currentUserName === friendToAdd) return res.json({ result: 'You can\'t add yourself as a freind!' });
-  if (!doc.exists) return res.json({ result: 'Current user not found' });
+    // Check if friendToAdd exists
+    const query = await usersCollection.where('username', '=', friendToAdd);
+    const querySnapshot = await query.get();
 
-  // Check if friendToAdd exists
-  const query = await usersCollection.where('username', '=', friendToAdd)
-  query.get().then(async (querySnapshot) => {
     let friendDocID;
 
     const result = querySnapshot.docs.map(doc => {
@@ -124,28 +127,28 @@ app.post('/api/add-friend', async (req, res) => {
     
     const [firstResult] = result;
 
-    if (firstResult) {
-      if (friendCode !== firstResult.friendCode) {
-        return res.json({ result: 'Invalid friend code' });
-      }
-      await docRef.update({
-        friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${friendDocID}`))
-      });
-
-      const friendDocRef = usersCollection.doc(friendDocID);
-      await friendDocRef.update({
-        friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${currentUserID}`))
-      });
-
-      res.json({ result: `Friend added: ${friendToAdd}` });
-    } else {
-      res.json({ result: 'Player not found' });
+    if (!firstResult) return res.json({ result: 'Player not found' });
+    if (friendDocID === currentUserID) {
+      return res.json({ result: 'You can\'t add yourself as a friend!' });
     }
-  })
-  .catch(error => {
-    console.log(`Error getting documents: ${error}`);
-    res.json([]);
-  });
+    if (friendCode !== firstResult.friendCode) {
+      return res.json({ result: 'Invalid friend code' });
+    }
+    
+    await docRef.update({
+      friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${friendDocID}`))
+    });
+
+    const friendDocRef = usersCollection.doc(friendDocID);
+    await friendDocRef.update({
+      friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${currentUserID}`))
+    });
+
+    res.json({ result: `Friend added: ${friendToAdd}` });
+  } catch(err) {
+    console.log(`/add-friend error: ${err}`);
+    res.json({ result: 'Could not add friend' });
+  }
 });
 
 app.post('/api/remove-friend', async (req, res) => {
@@ -165,33 +168,38 @@ app.post('/api/remove-friend', async (req, res) => {
   res.json({ result: `Friend removed: ${friendToRemove}` });
 });
 
-app.post('/api/fetch-friends', async (req, res) => {
-  console.log('/api/fetch-friends');
+app.post('/fetch-friends', isLoggedIn, async (req, res) => {
+  try {
+    const currentUserID = req.cookies.userID;
+    const usersCollection = db.collection('users');
+  
+    const docRef = usersCollection.doc(currentUserID);
+    const doc = await docRef.get();
+  
+    const friendRefs = doc.data().friends;
+    const friendDataPromises = friendRefs.map(async (friendRef) => {
+      const friendDoc = await friendRef.get();
+      return {
+        id: friendDoc.id,
+        username: friendDoc.data().username
+      };
+    });
 
-  const { currentUserID } = req.body;
-  const usersCollection = db.collection('users');
+    const results = await Promise.all(friendDataPromises);
 
-  const docRef = usersCollection.doc(currentUserID);
-  const doc = await docRef.get();
-
-  const friendRefs = doc.data().friends;
-  const friendDataPromises = friendRefs.map(async (friendRef) => {
-    const friendDoc = await friendRef.get();
-    return {
-      id: friendDoc.id,
-      username: friendDoc.data().username
-    };
-  });
-  const results = await Promise.all(friendDataPromises);
-
-  if (!doc.exists) res.json([]);
-  res.json(results);
+    if (!doc.exists) return res.json([]);
+    res.json(results);
+  } catch(err) {
+    console.log(`/fetch-friend error: ${err}`);
+    res.json([]);
+  }
 });
 
 
 app.get('/log-out', (req, res) => {
   console.log('--/logout');
   res.clearCookie('session');
+  res.clearCookie('userID');
   res.redirect('/');
 });
 

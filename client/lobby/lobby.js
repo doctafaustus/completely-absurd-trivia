@@ -43,7 +43,7 @@ function initLobby() {
 
   initFriendRemoveListener();
   initInviteListener();
-  // fetchFriends();
+  fetchFriends();
 
   // Decline party invitation
   document.addEventListener('click', ({ target }) => {

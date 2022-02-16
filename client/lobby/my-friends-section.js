@@ -1,4 +1,5 @@
 import { getCurrentUserValue } from '@/utils/user-utils.js';
+import utils from '@/utils/utils.js';
 import fetchFriends from '@/lobby/fetch-friends.js';
 
 
@@ -84,17 +85,16 @@ function inviteFriend(friendToInvite, lobbySocket) {
 }
 
 function addFriend(friendToAdd, friendCode) {
-  const currentUserID = getCurrentUserValue('id');
-  const currentUserName = getCurrentUserValue('username');
-
-  if (!currentUserID) return;
+  // const currentUserID = getCurrentUserValue('id');
+  // TODO: Test req manually without being logged in
    
-  fetch('http://localhost:8080/api/add-friend', {
+  fetch('/add-friend', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 
+      'Content-Type': 'application/json',
+      'CSRF-Token': utils.getCookie('XSRF-TOKEN')
+    },
     body: JSON.stringify({ 
-      currentUserID,
-      currentUserName,
       friendToAdd,
       friendCode
     })
