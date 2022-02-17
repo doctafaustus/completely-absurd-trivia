@@ -55,27 +55,25 @@ export default function addFriendSection(lobbySocket) {
   
     // Remove friend
     if (target.matches('.remove-friend')) {
-      const friendToRemove = target.closest('.friend-menu').dataset.friendUsername;
-      removeFriend(friendToRemove);
+      const friendToRemoveID = target.closest('.friend-menu').dataset.friendId;
+      removeFriend(friendToRemoveID);
     }
   });
 }
 
 
-function removeFriend(friendToRemove) {
-  const currentUserID = getCurrentUserValue('id');
-  if (!currentUserID) return;
-
-  console.log({ friendToRemove });
-   
-  fetch('http://localhost:8080/api/remove-friend', {
+function removeFriend(friendToRemoveID) {
+  fetch('/remove-friend', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ currentUserID, friendToRemove })
+    headers: { 
+      'Content-Type': 'application/json',
+      'CSRF-Token': utils.getCookie('XSRF-TOKEN')
+    },
+    body: JSON.stringify({ friendToRemoveID })
   })
   .then(response => response.json())
   .then(data => {
-    console.log('/api/remove-friend: \n', data);
+    console.log('/remove-friend: \n', data);
     fetchFriends();
   });
 }
@@ -84,10 +82,7 @@ function inviteFriend(friendToInvite, lobbySocket) {
   lobbySocket.emit('inviteFriend', friendToInvite);
 }
 
-function addFriend(friendToAdd, friendCode) {
-  // const currentUserID = getCurrentUserValue('id');
-  // TODO: Test req manually without being logged in
-   
+function addFriend(friendToAdd, friendCode) {   
   fetch('/add-friend', {
     method: 'POST',
     headers: { 
@@ -101,7 +96,7 @@ function addFriend(friendToAdd, friendCode) {
   })
   .then(response => response.json())
   .then(data => {
-    console.log('/api/add-friend: \n', data);
+    console.log('/add-friend: \n', data);
 
     addFriendStatus.textContent = data.result;
     setTimeout(() => { addFriendStatus.textContent = ''}, 3000);

@@ -5,16 +5,16 @@ Live reload is handled by the global `livereload` package, watching the `client/
 
 To run app:
 ```bash
-  // In root directory
-  nodemon app
+// In root directory
+nodemon app
 ```
 ```bash
-  // In client directory
-  npm run watch
+// In client directory
+npm run watch
 ```
 ```bash
-  // In another terminal
-  livereload client/dist --debug
+// In another terminal
+livereload client/dist --debug
 ```
 
 The app should run on `http://localhost:8080`. Note that we are not serving the `index.html` file using the static directory since we want to run server code before sending the file.

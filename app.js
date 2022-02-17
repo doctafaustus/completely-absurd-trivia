@@ -101,9 +101,11 @@ app.post('/add-if-new', async (req, res) => {
 });
 
 
-app.post('/add-friend', isLoggedIn, async (req, res) => {
+app.post('/add-friend', async (req, res) => {
   try {
     const currentUserID = req.cookies.userID;
+    if (!currentUserID) return res.json({ result: 'Current user not logged in' });
+
     const { friendToAdd, friendCode } = req.body;
     const usersCollection = db.collection('users');
 
@@ -136,12 +138,12 @@ app.post('/add-friend', isLoggedIn, async (req, res) => {
     }
     
     await docRef.update({
-      friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${friendDocID}`))
+      friends: admin.firestore.FieldValue.arrayUnion(friendDocID)
     });
 
     const friendDocRef = usersCollection.doc(friendDocID);
     await friendDocRef.update({
-      friends: admin.firestore.FieldValue.arrayUnion(db.doc(`users/${currentUserID}`))
+      friends: admin.firestore.FieldValue.arrayUnion(currentUserID)
     });
 
     res.json({ result: `Friend added: ${friendToAdd}` });
@@ -151,21 +153,32 @@ app.post('/add-friend', isLoggedIn, async (req, res) => {
   }
 });
 
-app.post('/api/remove-friend', async (req, res) => {
-  console.log('/api/remove-friend');
+app.post('/remove-friend', async (req, res) => {
+  try {
+    const currentUserID = req.cookies.userID;
+    if (!currentUserID) return res.json({ result: 'Current user not logged in' });
+  
+    const { friendToRemoveID } = req.body;
+    const usersCollection = db.collection('users');
+  
+    const docRef = usersCollection.doc(currentUserID);
+    const doc = await docRef.get();
+  
+    if (!doc.exists) return res.json({ result: 'Current user not found' });
+    await docRef.update({
+      friends: admin.firestore.FieldValue.arrayRemove(friendToRemoveID)
+    });
 
-  const { currentUserID, friendToRemove } = req.body;
-  const usersCollection = db.collection('users');
+    const friendDocRef = usersCollection.doc(friendToRemoveID);
+    await friendDocRef.update({
+      friends: admin.firestore.FieldValue.arrayRemove(currentUserID)
+    });
 
-  const docRef = usersCollection.doc(currentUserID);
-  const doc = await docRef.get();
-
-  if (!doc.exists) return res.json({ result: 'Current user not found' });
-  await docRef.update({
-    friends: admin.firestore.FieldValue.arrayRemove(friendToRemove)
-  });
-
-  res.json({ result: `Friend removed: ${friendToRemove}` });
+    res.json({ result: `Friend removed: ${friendToRemoveID}` });
+  } catch(err) {
+    console.log(`/remove-friend error: ${err}`);
+    res.json({ result: 'Could not remove friend' });
+  }
 });
 
 app.post('/fetch-friends', isLoggedIn, async (req, res) => {
@@ -176,18 +189,19 @@ app.post('/fetch-friends', isLoggedIn, async (req, res) => {
     const docRef = usersCollection.doc(currentUserID);
     const doc = await docRef.get();
   
-    const friendRefs = doc.data().friends;
-    const friendDataPromises = friendRefs.map(async (friendRef) => {
-      const friendDoc = await friendRef.get();
+    const friendIDArr = doc.data().friends;
+    if (friendIDArr.length === 0) return res.json([]);
+
+    const friendRefs = friendIDArr.map(friendID => usersCollection.doc(friendID));
+
+    const friends = await db.getAll(...friendRefs);
+    const results = friends.map(doc => {
       return {
-        id: friendDoc.id,
-        username: friendDoc.data().username
-      };
+        id: doc.id,
+        username: doc.data().username
+      }
     });
 
-    const results = await Promise.all(friendDataPromises);
-
-    if (!doc.exists) return res.json([]);
     res.json(results);
   } catch(err) {
     console.log(`/fetch-friend error: ${err}`);
