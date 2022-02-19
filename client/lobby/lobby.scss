@@ -121,6 +121,12 @@ header > div {
 
         .friend-name {
           cursor: pointer;
+
+          .invite-status {
+            color: #00cc4e;
+            font-style: italic;
+            font-size: 14px;
+          }
         }
 
         &[open] {
@@ -160,7 +166,18 @@ header > div {
 }
 
 .invite-request {
+  position: relative;
+
   .invite-message {
     margin-bottom: 8px;
+  }
+
+  .close {
+    position: absolute;
+    cursor: pointer;
+    top: 10px;
+    right: 10px;
+    z-index: 5;
+    width: 14px;
   }
 }

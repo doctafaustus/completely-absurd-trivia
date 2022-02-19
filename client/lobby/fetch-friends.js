@@ -21,6 +21,7 @@ export default function fetchFriends() {
           <summary class="friend-name">
             <img class="friend-avatar" src="/images/avatar-example.jpg">
             ${username}
+            <span class="invite-status"></span>
           </summary>
           <button class="lobby-btn invite-friend">
               Invite

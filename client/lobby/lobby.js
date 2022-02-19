@@ -1,5 +1,4 @@
 import myFriendsSection from '@/lobby/my-friends-section.js';
-import { getCurrentUserValue } from '@/utils/user-utils.js';
 import fetchFriends from '@/lobby/fetch-friends.js';
 
 
@@ -111,6 +110,7 @@ function displayInvite(inviter) {
         <button class="invite-action accept-invite">Accept</button>
         <button class="invite-action decline-invite">Decline</button>
       </div>
+      <img class="close" src="/images/x.png">
     </div>
   `;
 

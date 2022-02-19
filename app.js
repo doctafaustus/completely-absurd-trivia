@@ -211,7 +211,6 @@ app.post('/fetch-friends', isLoggedIn, async (req, res) => {
 
 
 app.get('/log-out', (req, res) => {
-  console.log('--/logout');
   res.clearCookie('session');
   res.clearCookie('userID');
   res.redirect('/');
@@ -266,14 +265,32 @@ function onConnect(socket) {
   });
 
   // Invite friend
-  socket.on('inviteFriend', friendToInvite => {
-    console.log(`${socket.username} wants to invite ${friendToInvite}`);
+  socket.on('inviteFriend', async (friendID) => {
+    const usersCollection = db.collection('users');
 
-    const playerObj = lobbyPeople[friendToInvite];
+    const friendDocRef = usersCollection.doc(friendID);
+    const friendDoc = await friendDocRef.get();
+    const friendUsername = friendDoc.data().username;
+    const friendList = friendDoc.data().friends;
+
+    console.log(`${socket.username} wants to invite ${friendUsername}`);
+
+    const socketCookie = socket.handshake.headers.cookie;
+    const inviterID = (socketCookie.match(/userID=(\w+);/) || [])[1];
+    if (!friendList.includes(inviterID)) {
+      // TODO: provide feedback for this case
+      return console.log('Invitee is not a friend of user');
+    } else console.log('all good');
+
+    const playerObj = lobbyPeople[friendUsername];
+
     // TODO: Add handling for player not online
-    if (!playerObj) return console.log('Player not online');
+    if (!playerObj) {
+      return console.log('Player not online');
+      // Need feedback to inviter for not online and message for succesful invite
+    }
 
-    const recipientSockets = lobbyPeople[friendToInvite].sockets;
+    const recipientSockets = lobbyPeople[friendUsername].sockets;
     Object.keys(recipientSockets).forEach(socketID => {
       lobbyIO.to(socketID).emit('inviteReceived', socket.username);
     });
